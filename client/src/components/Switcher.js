@@ -6,8 +6,8 @@ import { MainApp } from "./MainApp.js";
 export const Switcher = () => {
   return (
     <Routes>
-      <Route exact path="/web-crypto-market" element={<Landing />} />
-      <Route exact path="/web-crypto-market/app" element={<MainApp />} />
+      <Route exact path="web-crypto-market" element={<Landing />} />
+      <Route exact path="web-crypto-market/app" element={<MainApp />} />
     </Routes>
   );
 };
