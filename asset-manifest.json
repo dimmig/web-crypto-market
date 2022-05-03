@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/near-market%20/static/css/main.93763056.css",
-    "main.js": "/near-market%20/static/js/main.3cf99bda.js",
-    "static/js/787.c4e7f8f9.chunk.js": "/near-market%20/static/js/787.c4e7f8f9.chunk.js",
-    "static/media/man_image.png": "/near-market%20/static/media/man_image.8b4a97078990e99f3d10.png",
-    "static/media/features_img.png": "/near-market%20/static/media/features_img.8dab86b0375e31327610.png",
-    "static/media/telegram_img.png": "/near-market%20/static/media/telegram_img.eff004e9e8cb9eba1f74.png",
-    "static/media/team_photo.png": "/near-market%20/static/media/team_photo.db9969dec50e319e081c.png",
-    "index.html": "/near-market%20/index.html",
-    "main.93763056.css.map": "/near-market%20/static/css/main.93763056.css.map",
-    "main.3cf99bda.js.map": "/near-market%20/static/js/main.3cf99bda.js.map",
-    "787.c4e7f8f9.chunk.js.map": "/near-market%20/static/js/787.c4e7f8f9.chunk.js.map"
+    "main.css": "/web-crypto-market%20/static/css/main.93763056.css",
+    "main.js": "/web-crypto-market%20/static/js/main.47490a96.js",
+    "static/js/787.c4e7f8f9.chunk.js": "/web-crypto-market%20/static/js/787.c4e7f8f9.chunk.js",
+    "static/media/man_image.png": "/web-crypto-market%20/static/media/man_image.8b4a97078990e99f3d10.png",
+    "static/media/features_img.png": "/web-crypto-market%20/static/media/features_img.8dab86b0375e31327610.png",
+    "static/media/telegram_img.png": "/web-crypto-market%20/static/media/telegram_img.eff004e9e8cb9eba1f74.png",
+    "static/media/team_photo.png": "/web-crypto-market%20/static/media/team_photo.db9969dec50e319e081c.png",
+    "index.html": "/web-crypto-market%20/index.html",
+    "main.93763056.css.map": "/web-crypto-market%20/static/css/main.93763056.css.map",
+    "main.47490a96.js.map": "/web-crypto-market%20/static/js/main.47490a96.js.map",
+    "787.c4e7f8f9.chunk.js.map": "/web-crypto-market%20/static/js/787.c4e7f8f9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.93763056.css",
-    "static/js/main.3cf99bda.js"
+    "static/js/main.47490a96.js"
   ]
 }
