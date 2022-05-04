@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/web-crypto-market%20/static/css/main.93763056.css",
-    "main.js": "/web-crypto-market%20/static/js/main.26785555.js",
+    "main.js": "/web-crypto-market%20/static/js/main.66b9269a.js",
     "static/js/787.c4e7f8f9.chunk.js": "/web-crypto-market%20/static/js/787.c4e7f8f9.chunk.js",
     "static/media/man_image.png": "/web-crypto-market%20/static/media/man_image.8b4a97078990e99f3d10.png",
     "static/media/features_img.png": "/web-crypto-market%20/static/media/features_img.8dab86b0375e31327610.png",
@@ -9,11 +9,11 @@
     "static/media/team_photo.png": "/web-crypto-market%20/static/media/team_photo.db9969dec50e319e081c.png",
     "index.html": "/web-crypto-market%20/index.html",
     "main.93763056.css.map": "/web-crypto-market%20/static/css/main.93763056.css.map",
-    "main.26785555.js.map": "/web-crypto-market%20/static/js/main.26785555.js.map",
+    "main.66b9269a.js.map": "/web-crypto-market%20/static/js/main.66b9269a.js.map",
     "787.c4e7f8f9.chunk.js.map": "/web-crypto-market%20/static/js/787.c4e7f8f9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.93763056.css",
-    "static/js/main.26785555.js"
+    "static/js/main.66b9269a.js"
   ]
 }
