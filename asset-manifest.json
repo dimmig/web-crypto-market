@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "./static/css/main.d1fd40a8.css",
-    "main.js": "./static/js/main.e5f54db9.js",
-    "static/js/787.c4e7f8f9.chunk.js": "./static/js/787.c4e7f8f9.chunk.js",
-    "static/media/man_image.png": "./static/media/man_image.8b4a97078990e99f3d10.png",
-    "static/media/features_img.png": "./static/media/features_img.8dab86b0375e31327610.png",
-    "static/media/telegram_img.png": "./static/media/telegram_img.eff004e9e8cb9eba1f74.png",
-    "static/media/team_photo.png": "./static/media/team_photo.db9969dec50e319e081c.png",
-    "static/media/usdt_icon.svg": "./static/media/usdt_icon.fca189d56621292f265b89406807a356.svg",
-    "static/media/near_icon.svg": "./static/media/near_icon.f0e0e1f39d0e14ac9c31c81abcecb2a5.svg",
-    "index.html": "./index.html",
-    "static/media/buy_checkmark_icon.svg": "./static/media/buy_checkmark_icon.7f2189f3ae6cb71b0de8567d027141da.svg",
-    "static/media/sell_checkmark_icon.svg": "./static/media/sell_checkmark_icon.1cb45d4c8e9c5306b328940b93a48867.svg",
-    "main.d1fd40a8.css.map": "./static/css/main.d1fd40a8.css.map",
-    "main.e5f54db9.js.map": "./static/js/main.e5f54db9.js.map",
-    "787.c4e7f8f9.chunk.js.map": "./static/js/787.c4e7f8f9.chunk.js.map"
+    "main.css": "/web-crypto-market/static/css/main.d1fd40a8.css",
+    "main.js": "/web-crypto-market/static/js/main.87b72835.js",
+    "static/js/787.c4e7f8f9.chunk.js": "/web-crypto-market/static/js/787.c4e7f8f9.chunk.js",
+    "static/media/man_image.png": "/web-crypto-market/static/media/man_image.8b4a97078990e99f3d10.png",
+    "static/media/features_img.png": "/web-crypto-market/static/media/features_img.8dab86b0375e31327610.png",
+    "static/media/telegram_img.png": "/web-crypto-market/static/media/telegram_img.eff004e9e8cb9eba1f74.png",
+    "static/media/team_photo.png": "/web-crypto-market/static/media/team_photo.db9969dec50e319e081c.png",
+    "static/media/usdt_icon.svg": "/web-crypto-market/static/media/usdt_icon.fca189d56621292f265b89406807a356.svg",
+    "static/media/near_icon.svg": "/web-crypto-market/static/media/near_icon.f0e0e1f39d0e14ac9c31c81abcecb2a5.svg",
+    "index.html": "/web-crypto-market/index.html",
+    "static/media/buy_checkmark_icon.svg": "/web-crypto-market/static/media/buy_checkmark_icon.7f2189f3ae6cb71b0de8567d027141da.svg",
+    "static/media/sell_checkmark_icon.svg": "/web-crypto-market/static/media/sell_checkmark_icon.1cb45d4c8e9c5306b328940b93a48867.svg",
+    "main.d1fd40a8.css.map": "/web-crypto-market/static/css/main.d1fd40a8.css.map",
+    "main.87b72835.js.map": "/web-crypto-market/static/js/main.87b72835.js.map",
+    "787.c4e7f8f9.chunk.js.map": "/web-crypto-market/static/js/787.c4e7f8f9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d1fd40a8.css",
-    "static/js/main.e5f54db9.js"
+    "static/js/main.87b72835.js"
   ]
 }
