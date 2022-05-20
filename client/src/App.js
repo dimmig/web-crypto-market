@@ -1,6 +1,5 @@
-import React from "react";
-import { HashRouter as Router } from "react-router-dom";
 import { Switcher } from "./components/Switcher";
+import { HashRouter as Router } from "react-router-dom";
 
 function App() {
   return (

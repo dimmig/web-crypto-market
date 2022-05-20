@@ -1,47 +1,23 @@
 import React from "react";
 import "./styles/landing.css";
-import { IoWallet } from "react-icons/io5";
-import { RiCoinFill } from "react-icons/ri";
 
-import logo from "./styles/logo.png";
-import man_img from "./styles/man_image.png";
-import features_img from "./styles/features_img.png";
-import phone_img from "./styles/telegram_img.png";
-import team_img from "./styles/team_photo.png";
+import { Header } from "./App/Header";
+import { IoWallet } from "react-icons/io5";
+
+import nearIcon from "./styles/images/logo.png";
+import man_img from "./styles/images/man_image.png";
+import features_img from "./styles/images/features_img.png";
+import phone_img from "./styles/images/telegram_img.png";
+import team_img from "./styles/images/team_photo.png";
+import successCheckmark from "./styles/icons/success_checkmark.svg";
+import buyCheckmark from "./styles/icons/buy_checkmark_icon.svg";
+import sellCheckmark from "./styles/icons/sell_checkmark_icon.svg";
+import balanceIcon from "./styles/icons/balance_icon.svg";
 
 export const Landing = () => {
   return (
     <div className="conatiner">
-      <div className="header">
-        <div className="logo">
-          <img src={logo} alt="Logo" className="icon" />
-          <h1 className="bold">Near</h1>
-          <h2 className="thin">Market</h2>
-        </div>
-        <div className="hrefs">
-          <a className="hr" href="/how_to_use">
-            <p>How to use</p>
-          </a>
-
-          <a className="hr" href="/features">
-            <p>Features</p>
-          </a>
-
-          <a className="hr" href="/our_team">
-            <p>Our team</p>
-          </a>
-
-          <a className="hr" href="/telegram_bot">
-            <p>Telegram Bot</p>
-          </a>
-        </div>
-        <div className="btn-block">
-          <a href="/app">
-            <button className="default-button">Try app</button>
-          </a>
-        </div>
-      </div>
-
+      <Header logo={nearIcon} />
       <div className="man-image">
         <img src={man_img} alt={"i"} />
       </div>
@@ -53,7 +29,7 @@ export const Landing = () => {
         </h1>
         <h1 className="headline-text headline-text-special">NearMarket!</h1>
         <br />
-        <a href="/app">
+        <a href="#/app">
           <button className="default-button">Try app</button>
         </a>
       </div>
@@ -65,7 +41,7 @@ export const Landing = () => {
 
           <div className="block-text">
             <IoWallet className="wallet-icon" />
-            <img src={logo} alt="Logo" className="wallet-near-icon" />
+            <img src={nearIcon} alt="Logo" className="wallet-near-icon" />
             <h2 className="head-text">Connect wallet</h2>
             <h3>We support Metamask and NearWallet</h3>
           </div>
@@ -82,7 +58,9 @@ export const Landing = () => {
                 <h2>Buy 100 near</h2>
                 <h3>for 12 USDT</h3>
               </div>
-              <button className="small-button">Buy</button>
+              <button className="small-button" disabled>
+                Buy
+              </button>
             </div>
             <h2 className="head-text">Open order and wait for seller</h2>
             <h3>Sell and buy your tokens in a minutes</h3>
@@ -94,7 +72,7 @@ export const Landing = () => {
             <div className="hr-center-wrapper">
               <div className="assets-info">
                 <div className="checkmark-bg">
-                  <div className="checkmark"></div>
+                  <img src={successCheckmark} alt="Success checkmark" />
                 </div>
                 <h2 className="success">Success</h2>
               </div>
@@ -124,13 +102,21 @@ export const Landing = () => {
           <div className="feature-top-icons">
             <div className="icon-pos">
               <div className="buy-icon">
-                <div className="checkmark-buy-icon" />
+                <img
+                  src={buyCheckmark}
+                  alt="Buy checkmark"
+                  className="checkmark-icon"
+                />
               </div>
               <h3>Buy</h3>
             </div>
             <div className="icon-pos">
               <div className="sell-icon">
-                <div className="checkmark-sell-icon" />
+                <img
+                  src={sellCheckmark}
+                  alt="Sell checkmark"
+                  className="checkmark-icon"
+                />
               </div>
               <h3>Sell</h3>
             </div>
@@ -144,7 +130,7 @@ export const Landing = () => {
             </div>
             <div className="icon-pos">
               <div className="balance-icon">
-                <RiCoinFill />
+                <img src={balanceIcon} alt="Balance icon" />
               </div>
               <h3>Balance</h3>
             </div>
@@ -159,7 +145,11 @@ export const Landing = () => {
           cillum cupidatat. Labore pariatur qui dolor velit. Dolor quis Lorem
           laboris deserunt ut Lorem nisi excepteur enim qui fugiat quis mollit.
           Enim consequat veniam pariatur nulla nisi velit exercitation proident
-          culpa pariatur anim.
+          culpa pariatur anim. Cupidatat est dolore Lorem incididunt minim anim
+          excepteur in eu cillum cupidatat. Labore pariatur qui dolor velit.
+          Dolor quis Lorem laboris deserunt ut Lorem nisi excepteur enim qui
+          fugiat quis mollit. Enim consequat veniam pariatur nulla nisi velit
+          exercitation proident culpa pariatur anim.
         </p>
         <button className="default-button blue-button">Try bot</button>
       </div>
@@ -169,21 +159,21 @@ export const Landing = () => {
       <div className="team">
         <h3 className="heading">Our team</h3>
         <div className="team-row">
-          <div className="row">
+          <div className="img-team-row">
             <img src={team_img} alt="Team" className="team-image" />
             <div className="team-text">
               <h2>Anton Romankov</h2>
               <h3>CTO</h3>
             </div>
           </div>
-          <div className="row">
+          <div className="img-team-row">
             <img src={team_img} alt="Team" className="team-image" />
             <div className="team-text">
               <h2>Anton Romankov</h2>
               <h3>CTO</h3>
             </div>
           </div>
-          <div className="row">
+          <div className="img-team-row">
             <img src={team_img} alt="Team" className="team-image" />
             <div className="team-text">
               <h2>Anton Romankov</h2>
@@ -194,36 +184,8 @@ export const Landing = () => {
       </div>
 
       <div id="footer">
-        <div className="header">
-        <div className="logo">
-          <img src={logo} alt="Logo" className="icon" />
-          <h1 className="bold">Near</h1>
-          <h2 className="thin">Market</h2>
-        </div>
-        <div className="hrefs">
-          <a className="hr" href="/how_to_use">
-            <p>How to use</p>
-          </a>
-
-          <a className="hr" href="/features">
-            <p>Features</p>
-          </a>
-
-          <a className="hr" href="/our_team">
-            <p>Our team</p>
-          </a>
-
-          <a className="hr" href="/telegram_bot">
-            <p>Telegram Bot</p>
-          </a>
-        </div>
-        <div className="btn-block">
-          <a href="/app">
-            <button className="default-button">Try app</button>
-          </a>
-        </div>
-        </div>
-        </div>      
+        <Header logo={nearIcon} />
+      </div>
     </div>
   );
 };

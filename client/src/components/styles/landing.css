@@ -47,6 +47,7 @@ a:hover {
 .bold {
   font-size: 20px;
   font-weight: 500;
+  margin-top: 11%;
 }
 
 .thin {
@@ -59,18 +60,24 @@ a:hover {
   display: flex;
   margin-left: 5%;
   align-items: center;
-  justify-content: center;
-  flex-direction: row;
 }
 
 .icon {
   max-height: 40px;
 }
 
+.wallet-icon {
+  margin-bottom: 10%;
+  font-size: 30px;
+  margin-left: 30%;
+  transform: rotate(-12deg);
+}
+
 .wallet-near-icon {
   height: 60px;
   margin-bottom: 20%;
   transform: rotate(20deg);
+  user-select: none;
 }
 
 .hrefs {
@@ -79,8 +86,6 @@ a:hover {
 }
 
 .btn-block {
-  display: flex;
-  align-items: center;
   margin-right: 5%;
   padding: 12px 46px;
 }
@@ -164,9 +169,8 @@ a:hover {
 .heading {
   width: 100%;
   height: 50%;
-  margin-top: 10%;
+  margin: 10% 0 20px 5%;
   font-size: 40px;
-  margin-left: 5%;
   font-family: "Rany";
   font-style: normal;
   font-weight: 200;
@@ -177,6 +181,7 @@ a:hover {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .block {
@@ -212,21 +217,6 @@ a:hover {
   opacity: 0.3;
 }
 
-.wallet-icon {
-  margin-bottom: 10%;
-  font-size: 30px;
-  margin-left: 30%;
-  transform: rotate(-12deg);
-}
-
-.user-icon {
-  display: flex;
-  flex-direction: column;
-  width: 35px;
-  margin-left: 30%;
-  margin-bottom: 10%;
-}
-
 .order-info {
   display: flex;
   flex-direction: row;
@@ -247,6 +237,14 @@ a:hover {
   margin-top: 5px;
   font-weight: 300;
   color: #000000;
+}
+
+.user-icon {
+  display: flex;
+  flex-direction: column;
+  width: 35px;
+  margin-left: 30%;
+  margin-bottom: 10%;
 }
 
 .circle {
@@ -278,15 +276,11 @@ a:hover {
   position: relative;
 }
 
-.checkmark {
+.checkmark-bg img {
   position: absolute;
-  transform: rotate(45deg) translate(-50%, -50%);
-  left: 35%;
-  top: 45%;
-  height: 12px;
-  width: 6px;
-  border-bottom: 2px solid #fff;
-  border-right: 2px solid #fff;
+  top: 30%;
+  left: 25%;
+  user-select: none;
 }
 
 .success {
@@ -356,7 +350,7 @@ a:hover {
 }
 
 .icon-pos {
-  width: 30%;
+  width: 140px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -371,26 +365,21 @@ a:hover {
   opacity: 0.7;
 }
 
+.icon-pos img {
+  user-select: none;
+}
+
 .buy-icon {
   height: 44px;
   width: 44px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
+  position: fixed;
   align-items: center;
   background-color: #1aafa6;
   position: relative;
   box-shadow: 0px 7px 9px rgba(26, 175, 166, 0.12);
-}
-
-.checkmark-buy-icon {
-  width: 10px;
-  height: 10px;
-  border-radius: 2px;
-  position: absolute;
-  border-bottom: 3px solid #fff;
-  border-right: 3px solid #fff;
-  transform: rotate(45deg);
 }
 
 .sell-icon {
@@ -399,20 +388,16 @@ a:hover {
   border-radius: 50%;
   display: flex;
   justify-content: center;
+  position: fixed;
+  align-items: center;
   background-color: #e37a7a;
   position: relative;
   box-shadow: 0px 7px 9px rgba(255, 36, 120, 0.12);
 }
 
-.checkmark-sell-icon {
-  width: 10px;
-  height: 10px;
-  position: absolute;
-  border-radius: 2px;
-  border-bottom: 3px solid #fff;
-  border-right: 3px solid #fff;
-  top: 40%;
-  transform: rotate(-135deg);
+.checkmark-icon {
+  width: 20px;
+  height: 20px;
 }
 
 .feature-bottom-icons {
@@ -456,15 +441,10 @@ a:hover {
   box-shadow: 0px 7px 9px rgba(112, 52, 253, 0.12);
 }
 
-.balance-icon svg {
-  font-size: 20px;
-  color: #fff;
-}
-
 .telegram-heading {
   width: 100%;
   height: 50%;
-  margin: 5% 0 0 0;
+  margin: 5% 0 20px 0;
   font-family: "Rany";
   font-style: normal;
   font-weight: 200;
@@ -506,13 +486,13 @@ a:hover {
   margin-left: 5%;
 }
 
-.row {
+.img-team-row {
   display: flex;
   flex-direction: row;
   margin-right: 20%;
 }
 
-.row h2 {
+.img-team-row h2 {
   font-family: "Rany";
   font-size: 18px;
   font-weight: 500;
@@ -523,15 +503,14 @@ a:hover {
   width: 170px;
 }
 
-.row h3 {
+.img-team-row h3 {
   font-family: "Rany";
   font-size: 16px;
   margin-left: 20px;
   font-weight: 300;
-
   opacity: 0.9;
 }
 
 #footer {
-margin-top: 5`%;
+  margin-top: 5%;
 }
