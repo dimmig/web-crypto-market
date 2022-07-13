@@ -19,9 +19,10 @@ import { Balances } from "./Balances";
 import { OrderBook } from "./OrderBook";
 import tokenConfig from "../../config/tokenConfig";
 
-const ONE_YOCTO = 1;
-const TGAS = 300000000000000;
+const BN = require("bn.js");
 
+const ONE_YOCTO = 1;
+const TGAS = new BN(300000000000000);
 // Hardcoded orderList
 const ORDER_LIST = [
   {
@@ -135,21 +136,32 @@ export const MainApp = ({
       getFtBalances();
 
       getPairs();
+      getAllOrders();
     }
     sortOrders();
   }, []);
 
+  // const test = async () => {
+  //   const orders = await contract.get_orders({sell_token: "wusdt.testnet", buy_token: "galag.testnet"});
+  //   console.log(orders)
+  // }
+
   const initTokenContract = async () => {
     let stableTokenConfig;
-    if (userAction === "buy") {
-      //localStorage.setItem("action", "buy");
+    const orderMsg = JSON.parse(localStorage.getItem("msg"));
+    if (orderMsg.hasOwnProperty("sell_token") && userAction === "buy") {
       stableTokenConfig = tokenConfig(process.env.NEAR_ENV || "testnet");
       console.log(currentNotStableToken);
       stableTokenConfig.contractName = currentNotStableToken.address;
-    } else if (userAction === "sell") {
-      //localStorage.setItem("action", "sell");
+    } else if (orderMsg.hasOwnProperty("sell_token") && userAction === "sell") {
       stableTokenConfig = tokenConfig(process.env.NEAR_ENV || "testnet");
+    } else if (userAction === "buy") {
+      stableTokenConfig = tokenConfig(process.env.NEAR_ENV || "testnet");
+    } else if (userAction === "sell") {
+      stableTokenConfig = tokenConfig(process.env.NEAR_ENV || "testnet");
+      stableTokenConfig.contractName = currentNotStableToken.address;
     }
+
     console.log("CONFIG", stableTokenConfig);
     const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
 
@@ -212,8 +224,6 @@ export const MainApp = ({
             symbol: tokenMeta.symbol,
             address: tokenAddress,
           });
-
-          getAllOrders(tokenAddress);
         }
 
         setTokens(result);
@@ -244,6 +254,7 @@ export const MainApp = ({
       methodNames: [
         "match_order",
         "add_order",
+        "add_filled_order",
         "get_or_create_fee_info",
         "take_fee",
         "set_fee",
@@ -265,15 +276,17 @@ export const MainApp = ({
   };
 
   //! GET ORDERS
-  const getAllOrders = async (currentToken) => {
+  const getAllOrders = async () => {
     if (localStorage.getItem("seemoreAction") === null) {
       localStorage.setItem("seemoreAction", "2");
     }
 
     const pairs = await contract.get_pairs();
     console.log(pairs);
+    if (pairs.length === 0) {
+      return setOrders(null);
+    }
     const result = [];
-    const limitedOrders = [];
 
     for (const pair of pairs) {
       // const storageMessages = localStorage.getItem("messages");
@@ -282,32 +295,134 @@ export const MainApp = ({
 
       const sellToken = pair.split("#")[0];
       const buyToken = pair.split("#")[1];
+      console.log(`${sellToken}#${buyToken}`);
 
       const orders = await contract.get_orders({
         sell_token: sellToken,
         buy_token: buyToken,
       });
+      console.log("ORDERS in get all orders", orders);
 
-      const sellTokenSymbol = await contractQuery(sellToken, "ft_metadata");
-      const buyTokenSymbol = await contractQuery(buyToken, "ft_metadata");
+      const finishedOrders = await contract.get_filled_orders({
+        sell_token: sellToken,
+        buy_token: buyToken,
+      });
+      console.log("FINISHED ORDERS in get all orders", finishedOrders);
 
-      // const messages = localStorage.getItem("messages");
-      // console.log("MESSAGES", messages);
+      let sellTokenSymbol = await contractQuery(sellToken, "ft_metadata");
+      let buyTokenSymbol = await contractQuery(buyToken, "ft_metadata");
 
       const filtredOrders = orders.filter(
         (obj) => obj.order.maker === currentUser.accountId
       );
+
+      if (
+        filtredOrders.length === 0 &&
+        finishedOrders === null //&&
+        //orders.length === 0
+      ) {
+        setOrders(null);
+        return;
+      }
+
+      for (const filtredOrder of filtredOrders) {
+        const buyAmount = await toPrecision(
+          filtredOrder.order.buy_amount,
+          filtredOrder.order.buy_token
+        );
+        const sellAmount = await toPrecision(
+          filtredOrder.order.sell_amount,
+          filtredOrder.order.sell_token
+        );
+
+        filtredOrder.order.buy_amount = buyAmount;
+        filtredOrder.order.sell_amount = sellAmount;
+      }
+
+      let matchedBuyToken;
+      let matchedSellToken;
+      if (finishedOrders !== null) {
+        const filterFinishedOrders = finishedOrders.filter(
+          (filtredFinishedOrder) =>
+            filtredFinishedOrder.order.maker === currentUser.accountId ||
+            filtredFinishedOrder.order.matcher === currentUser.accountId
+        );
+
+        if (
+          filtredOrders.length === 0 &&
+          filterFinishedOrders.length === 0 &&
+          orders.length == 0
+        ) {
+          setOrders(null);
+          return;
+        }
+
+        await parseAmount(filterFinishedOrders);
+
+        for (const finishedOrder of filterFinishedOrders) {
+          if (finishedOrder.order.matcher === currentUser.accountId) {
+            finishedOrder.order.action === "buy"
+              ? (finishedOrder.order.action = "sell")
+              : (finishedOrder.order.action = "buy");
+
+            // const buyAmount = await toPrecision(
+            //   finishedOrder.order.buy_amount,
+            //   finishedOrder.order.buy_token
+            // );
+            // const sellAmount = await toPrecision(
+            //   finishedOrder.order.sell_amount,
+            //   finishedOrder.order.sell_token
+            // );
+
+            // finishedOrder.order.buy_amount = sellAmount;
+            // finishedOrder.order.sell_amount = buyAmount;
+
+            matchedBuyToken = sellTokenSymbol;
+            matchedSellToken = buyTokenSymbol;
+
+            filtredOrders.push(finishedOrder);
+          } else if (finishedOrder.order.maker === currentUser.accountId) {
+            for (let i = 0; i < filtredOrders.length; i++) {
+              if (
+                filtredOrders[i].order.creation_time ===
+                finishedOrder.order.creation_time
+              ) {
+                finishedOrder.order.buy_amount =
+                  filtredOrders[i].order.buy_amount;
+                finishedOrder.order.sell_amount =
+                  filtredOrders[i].order.sell_amount;
+
+                filtredOrders.splice(i, 1);
+
+                filtredOrders.push(finishedOrder);
+              }
+            }
+          }
+        }
+      }
       for (const obj of filtredOrders) {
-        result.push({
-          id: obj.order_id,
-          type: obj.order.action,
-          buy_token: buyTokenSymbol.symbol,
-          buy_amount: obj.order.buy_amount,
-          sell_token: sellTokenSymbol.symbol,
-          sell_amount: obj.order.sell_amount,
-          status: "New",
-          creationTime: obj.order.creation_time,
-        });
+        obj.order.hasOwnProperty("matcher") &&
+        obj.order.matcher === currentUser.accountId
+          ? result.push({
+              id: obj.order_id,
+              type: obj.order.action,
+              buy_token: matchedBuyToken.symbol,
+              buy_amount: obj.order.buy_amount,
+              sell_token: matchedSellToken.symbol,
+              sell_amount: obj.order.sell_amount,
+              status: obj.order.status,
+              creationTime: obj.order.creation_time,
+            })
+          : result.push({
+              id: obj.order_id,
+              type: obj.order.action,
+              buy_token: buyTokenSymbol.symbol,
+              buy_amount: obj.order.buy_amount,
+              sell_token: sellTokenSymbol.symbol,
+              sell_amount: obj.order.sell_amount,
+              status: obj.order.status,
+              creationTime: obj.order.creation_time,
+            });
       }
     }
 
@@ -388,6 +503,11 @@ export const MainApp = ({
     return Big(value).div(Big(10).pow(result.decimals)).round(fixed).toFixed();
   };
 
+  const fromPrecision = async (value, tokenAddress, fixed = 6) => {
+    const result = await contractQuery(tokenAddress, "ft_metadata");
+    return Big(value).mul(Big(10).pow(result.decimals)).round(fixed).toFixed();
+  };
+
   const sendTransaction = async () => {
     const errorBlock = document.getElementById("error-block");
     const parsedAmount = parseFloat(userAmount);
@@ -441,65 +561,118 @@ export const MainApp = ({
       errorBlock.classList.add("not-visible");
     }
 
-    const msg = {
+    let msg = {
       sell_token:
         userAction === "buy"
           ? wUSDTTokenData.address //! swap
           : currentNotStableToken.address,
-      sell_amount: userAction === "buy" ? userPrice : userAmount,
+      sell_amount:
+        userAction === "buy"
+          ? await fromPrecision(userPrice, wUSDTTokenData.address)
+          : await fromPrecision(userAmount, currentNotStableToken.address),
       buy_token:
         userAction === "buy"
           ? currentNotStableToken.address
           : wUSDTTokenData.address,
-      buy_amount: userAction === "buy" ? userAmount : userPrice,
+      buy_amount:
+        userAction === "buy"
+          ? await fromPrecision(userAmount, currentNotStableToken.address)
+          : await fromPrecision(userPrice, wUSDTTokenData.address),
       action: userAction,
       creation_time: Date.now().toString(),
+      status: "New",
     };
 
-    const orders = contract
-      .get_orders({
-        sell_token: msg.buy_token,
-        buy_token: msg.sell_token,
-      })
-      .map((order) => {
-        if (
-          order.order.buy_amount === msg.sell_amount &&
-          order.order.sell_amount === msg.buy_amount &&
-          order.order.maker !== currentUser.accountId
-        ) {
+    let orders = await contract.get_orders({
+      sell_token: msg.sell_token,
+      buy_token: msg.buy_token,
+    });
+
+    let reversedOrders = await contract.get_orders({
+      sell_token: msg.buy_token,
+      buy_token: msg.sell_token,
+    });
+
+    let mustExit = false;
+
+    if (reversedOrders !== null) {
+      reversedOrders.map((reversedOrder) => {
+        // const ordersCondition =
+        //   order.order.buy_amount === msg.sell_amount &&
+        //   order.order.sell_amount === msg.buy_amount &&
+        //   order.order.maker !== currentUser.accountId;
+        const revesredOrderCondition =
+          reversedOrder.order.buy_amount === msg.sell_amount &&
+          reversedOrder.order.sell_amount === msg.buy_amount &&
+          reversedOrder.order.maker !== currentUser.accountId;
+        if (revesredOrderCondition) {
           msg = {
-            order_id: order.order_id,
+            order_id: reversedOrder.order_id,
           };
-          
-        } else if (
-          order.order.buy_amount === msg.sell_amount &&
-          order.order.sell_amount === msg.buy_amount &&
+        }
+      });
+    }
+    if (orders !== null) {
+      orders.map((order) => {
+        if (
+          order.order.buy_amount === msg.buy_amount &&
+          order.order.sell_amount === msg.sell_amount &&
           order.order.maker === currentUser.accountId
         ) {
           errorBlock.classList.remove("not-visible");
-          return setErrorText("order already exists");
+          setErrorText("order already exists");
+          mustExit = true;
         }
       });
+    }
 
-    //localStorage.setItem("msg", JSON.stringify(msg));
+    if (mustExit) {
+      return;
+    }
 
-    initTokenContract().then(async ({ tokenContract }) => {
+    localStorage.setItem("msg", JSON.stringify(msg));
+
+    console.log("ORDERS", orders);
+    console.log("MESSAGE", msg);
+
+    initTokenContract().then(async ({ tokenContract, stableTokenConfig }) => {
+      const parsedAmount = await fromPrecision(
+        userAmount,
+        stableTokenConfig.contractName
+      );
+      const parsedPrice = await fromPrecision(
+        userPrice,
+        stableTokenConfig.contractName
+      );
+
       const result = await tokenContract.ft_transfer_call(
-        userAction === "buy"
+        msg.hasOwnProperty("sell_token")
+          ? userAction === "buy"
+            ? {
+                receiver_id: config.contractName,
+                amount: msg.buy_amount,
+                msg: JSON.stringify(msg),
+              }
+            : {
+                receiver_id: config.contractName,
+                amount: msg.sell_amount,
+                msg: JSON.stringify(msg),
+              }
+          : userAction === "buy"
           ? {
               receiver_id: config.contractName,
-              amount: userAmount,
+              amount: parsedPrice,
               msg: JSON.stringify(msg),
             }
           : {
               receiver_id: config.contractName,
-              amount: userPrice,
+              amount: parsedAmount,
               msg: JSON.stringify(msg),
             },
-
         TGAS,
         ONE_YOCTO
       );
+
       console.log("RESULT", result);
     });
   };
@@ -519,6 +692,13 @@ export const MainApp = ({
     } while (swapped);
     setOrderBook(ORDER_BOOK.reverse());
   };
+
+  const parseAmount = async (orders) => {
+    for (const order of orders) {
+      order.order.buy_amount = await toPrecision(order.order.buy_amount, order.order.buy_token);
+      order.order.sell_amount = await toPrecision(order.order.sell_amount, order.order.sell_token);
+    }
+  }
 
   const composeKey = (sell_token, buy_token) => {
     const result = sell_token + "#" + buy_token;
@@ -801,50 +981,45 @@ export const MainApp = ({
                     </button>
 
                     <div className="not-visible" id="dd-tokens-list">
-                      <div className="tokens-list">
-                        {tokens.map((token, index) => (
-                          <li key={index} className="tokens-row">
-                            {token.symbol !== "wUSDT" ? (
-                              <>
-                                <img
-                                  src={token.icon}
-                                  className=" tokens-icon"
-                                />
-                                <button
-                                  className="dd-tokens-button-item"
-                                  onClick={() => {
-                                    const coinText =
-                                      document.getElementById("coin-text");
-                                    const maxAmount =
-                                      document.getElementById("max-amount");
-                                    const tokensButton =
-                                      document.getElementById("tokens-dd");
+                      {tokens.map((token, index) => (
+                        <li key={index} className="tokens-row">
+                          {token.symbol !== "wUSDT" ? (
+                            <>
+                              <img src={token.icon} className=" tokens-icon" />
+                              <button
+                                className="dd-tokens-button-item"
+                                onClick={() => {
+                                  const coinText =
+                                    document.getElementById("coin-text");
+                                  const maxAmount =
+                                    document.getElementById("max-amount");
+                                  const tokensButton =
+                                    document.getElementById("tokens-dd");
+                                  document.getElementById(
+                                    "near-coin-icon"
+                                  ).src = token.icon;
+                                  const orderBookAmount =
                                     document.getElementById(
-                                      "near-coin-icon"
-                                    ).src = token.icon;
-                                    const orderBookAmount =
-                                      document.getElementById(
-                                        "order-book-amount"
-                                      );
-                                    maxAmount.innerText = `243 ${token.symbol}`;
-                                    coinText.innerText = token.symbol;
-                                    tokensButton.innerText = `${token.symbol}/wUSDT`;
-                                    orderBookAmount.innerText = `Amount (${token.symbol})`;
-                                    setCurrentNotStableToken({
-                                      symbol: token.symbol,
-                                      address: token.address,
-                                    });
-                                  }}
-                                >
-                                  {token.symbol}/wUSDT
-                                </button>
-                              </>
-                            ) : (
-                              <></>
-                            )}
-                          </li>
-                        ))}
-                      </div>
+                                      "order-book-amount"
+                                    );
+                                  maxAmount.innerText = `243 ${token.symbol}`;
+                                  coinText.innerText = token.symbol;
+                                  tokensButton.innerText = `${token.symbol}/wUSDT`;
+                                  orderBookAmount.innerText = `Amount (${token.symbol})`;
+                                  setCurrentNotStableToken({
+                                    symbol: token.symbol,
+                                    address: token.address,
+                                  });
+                                }}
+                              >
+                                {token.symbol}/wUSDT
+                              </button>
+                            </>
+                          ) : (
+                            <></>
+                          )}
+                        </li>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -945,7 +1120,7 @@ export const MainApp = ({
               <div id="orders-list">
                 {orderComponent ? orderComponent : <Orders orders={orders} />}
               </div>
-              {orders !== null && orders.length > 4 ? (
+              {orders !== null && orders.length > 5 ? (
                 <div className="seemore-block">
                   <button className="seemore-button" onClick={getMoreOrders}>
                     See more. . .
