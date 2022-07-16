@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import BuyCheckmarkIcon from "../styles/icons/buy_checkmark_icon.svg";
 import SellCheckmarkIcon from "../styles/icons/sell_checkmark_icon.svg";
 import "../styles/landing.css";
 import "../styles/app.css";
+import BN from "bn.js";
 
 export const Orders = (props) => {
-  if (props.orders !== null) {
+  const [orderId, setOrderId] = useState("");
+  const [sellToken, setSellToken] = useState("");
+  const [buyToken, setBuyToken] = useState("");
+
+  if (props.orders === null || props.orders.length === 0) {
+    return (
+      <div>
+        <h3 className="no-orders">No orders here yet...</h3>
+      </div>
+    );
+  } else {
     let sortedByCreationDate = [];
 
     if (typeof props.orders[0].creationTime === "undefined") {
@@ -28,10 +39,10 @@ export const Orders = (props) => {
 
     // const sliceOrders = (currentAction) => {
     //   const numberOfOrdersPerOneAction = 5;
-  
+
     //   const startIndex = (currentAction - 1) * numberOfOrdersPerOneAction;
     //   const endIndex = startIndex + numberOfOrdersPerOneAction;
-  
+
     //   return sortedByCreationDate.slice(startIndex, endIndex)
     // };
 
@@ -88,7 +99,38 @@ export const Orders = (props) => {
 
           <div className="order-creation-date">
             <p>
-              {item.creationTime ? (
+              {item.creationTime && item.status === "New" ? (
+                <span className="cancell-btn-block">
+                  <span className="creation-time">
+                    {
+                      new Date(parseInt(item.creationTime))
+                        .toString()
+                        .split("G")[0]
+                    }
+                  </span>
+
+                  <button
+                    className="cancell-order-button"
+                    onClick={async () => {
+                      const ONE_YOCTO = 1;
+                      const id = item.id;
+                      const sellToken = item.sell_token_address;
+                      const buyToken = item.buy_token_address;
+
+                      await props.contract.remove_order(
+                        {
+                          sell_token: sellToken,
+                          buy_token: buyToken,
+                          order_id: id,
+                        },
+                       new BN(300000000000000),
+                      );
+                    }}
+                  >
+                    Cancell
+                  </button>
+                </span>
+              ) : (
                 <>
                   {
                     new Date(parseInt(item.creationTime))
@@ -96,14 +138,14 @@ export const Orders = (props) => {
                       .split("G")[0]
                   }
                 </>
-              ) : (
-                <></>
               )}
             </p>
           </div>
 
           {item.status !== "Cancelled" && item.status !== "Finished" ? (
-            <p className="new-order-status">New</p>
+            <div className="new-order-status-block">
+              <p className="new-order-status">New</p>
+            </div>
           ) : (
             <></>
           )}
@@ -123,9 +165,4 @@ export const Orders = (props) => {
 
     return <ul className="tokens-list">{ordersList}</ul>;
   }
-  return (
-    <div>
-      <h3 className="no-orders">No orders here yet...</h3>
-    </div>
-  );
 };

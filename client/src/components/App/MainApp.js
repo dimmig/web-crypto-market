@@ -151,10 +151,9 @@ export const MainApp = ({
     const orderMsg = JSON.parse(localStorage.getItem("msg"));
     if (orderMsg.hasOwnProperty("sell_token") && userAction === "buy") {
       stableTokenConfig = tokenConfig(process.env.NEAR_ENV || "testnet");
-      console.log(currentNotStableToken);
-      stableTokenConfig.contractName = currentNotStableToken.address;
     } else if (orderMsg.hasOwnProperty("sell_token") && userAction === "sell") {
       stableTokenConfig = tokenConfig(process.env.NEAR_ENV || "testnet");
+      stableTokenConfig.contractName = currentNotStableToken.address;
     } else if (userAction === "buy") {
       stableTokenConfig = tokenConfig(process.env.NEAR_ENV || "testnet");
     } else if (userAction === "sell") {
@@ -281,151 +280,148 @@ export const MainApp = ({
       localStorage.setItem("seemoreAction", "2");
     }
 
-    const pairs = await contract.get_pairs();
+    console.log("FINISHED PAIRS", await contract.get_pairs());
+
+    const pairs = await contract.get_pairs(); //!
+    const finishedPairs = await contract.get_finished_pairs();
+    finishedPairs.map((orderPair) => {
+      if (!pairs.includes(orderPair)) {
+        pairs.push(orderPair);
+      }
+    });
+
     console.log(pairs);
     if (pairs.length === 0) {
       return setOrders(null);
     }
+
     const result = [];
+    pairs.forEach(async (item) => {
+      const sellTokenAddress = item.split("#")[0];
+      const buyTokenAddress = item.split("#")[1];
 
-    for (const pair of pairs) {
-      // const storageMessages = localStorage.getItem("messages");
-      // console.log(storageMessages)
-      // const messages = JSON.parse(storageMessages);
-
-      const sellToken = pair.split("#")[0];
-      const buyToken = pair.split("#")[1];
-      console.log(`${sellToken}#${buyToken}`);
-
-      const orders = await contract.get_orders({
-        sell_token: sellToken,
-        buy_token: buyToken,
-      });
-      console.log("ORDERS in get all orders", orders);
-
-      const finishedOrders = await contract.get_filled_orders({
-        sell_token: sellToken,
-        buy_token: buyToken,
-      });
-      console.log("FINISHED ORDERS in get all orders", finishedOrders);
-
-      let sellTokenSymbol = await contractQuery(sellToken, "ft_metadata");
-      let buyTokenSymbol = await contractQuery(buyToken, "ft_metadata");
-
-      const filtredOrders = orders.filter(
-        (obj) => obj.order.maker === currentUser.accountId
+      const sellTokenSymbol = await contractQuery(
+        sellTokenAddress,
+        "ft_metadata"
+      );
+      const buyTokenSymbol = await contractQuery(
+        buyTokenAddress,
+        "ft_metadata"
       );
 
-      if (
-        filtredOrders.length === 0 &&
-        finishedOrders === null //&&
-        //orders.length === 0
-      ) {
-        setOrders(null);
-        return;
-      }
+      const allOrders = contract.get_orders({
+        sell_token: sellTokenAddress,
+        buy_token: buyTokenAddress,
+      });
 
-      for (const filtredOrder of filtredOrders) {
-        const buyAmount = await toPrecision(
-          filtredOrder.order.buy_amount,
-          filtredOrder.order.buy_token
-        );
-        const sellAmount = await toPrecision(
-          filtredOrder.order.sell_amount,
-          filtredOrder.order.sell_token
-        );
+      const finishedOrders = contract.get_filled_orders({
+        sell_token: buyTokenAddress,
+        buy_token: sellTokenAddress,
+      });
 
-        filtredOrder.order.buy_amount = buyAmount;
-        filtredOrder.order.sell_amount = sellAmount;
-      }
+      Promise.all([allOrders, finishedOrders]).then((value) => {
+        const allOrders = value[0];
+        const finishedOrders = value[1];
+        let ordersByUser = [];
+        console.log("NOT PARSED FINISHED ORDERS", finishedOrders);
+        console.log("NOT PARSED ORDERS", allOrders);
 
-      let matchedBuyToken;
-      let matchedSellToken;
-      if (finishedOrders !== null) {
-        const filterFinishedOrders = finishedOrders.filter(
-          (filtredFinishedOrder) =>
-            filtredFinishedOrder.order.maker === currentUser.accountId ||
-            filtredFinishedOrder.order.matcher === currentUser.accountId
-        );
-
-        if (
-          filtredOrders.length === 0 &&
-          filterFinishedOrders.length === 0 &&
-          orders.length == 0
-        ) {
-          setOrders(null);
-          return;
+        if (allOrders === null && finishedOrders === null) {
+          return setOrders(null);
         }
 
-        await parseAmount(filterFinishedOrders);
+        if (allOrders !== null) {
+          ordersByUser = allOrders.filter(
+            (order) => order.order.maker === currentUser.accountId
+          );
+        }
 
-        for (const finishedOrder of filterFinishedOrders) {
-          if (finishedOrder.order.matcher === currentUser.accountId) {
-            finishedOrder.order.action === "buy"
-              ? (finishedOrder.order.action = "sell")
-              : (finishedOrder.order.action = "buy");
+        let finishedOrdersByUser = [];
+        if (finishedOrders !== null) {
+          finishedOrdersByUser = finishedOrders.filter(
+            (finishedOrder) =>
+              finishedOrder.order.maker === currentUser.accountId ||
+              finishedOrder.order.matcher === currentUser.accountId
+          );
+        }
 
-            // const buyAmount = await toPrecision(
-            //   finishedOrder.order.buy_amount,
-            //   finishedOrder.order.buy_token
-            // );
-            // const sellAmount = await toPrecision(
-            //   finishedOrder.order.sell_amount,
-            //   finishedOrder.order.sell_token
-            // );
+        console.log("ORDERS", ordersByUser);
+        console.log("FINISHED ORDERS", finishedOrdersByUser);
 
-            // finishedOrder.order.buy_amount = sellAmount;
-            // finishedOrder.order.sell_amount = buyAmount;
+        if (ordersByUser.length !== 0) {
+          for (const order of ordersByUser) {
+            (async (item) => {
+              const parsedBuyAmount = await toPrecision(
+                item.order.buy_amount,
+                item.order.buy_token
+              );
+              const parsedSellAmount = await toPrecision(
+                item.order.sell_amount,
+                item.order.sell_token
+              );
 
-            matchedBuyToken = sellTokenSymbol;
-            matchedSellToken = buyTokenSymbol;
+              console.log(item.order);
 
-            filtredOrders.push(finishedOrder);
-          } else if (finishedOrder.order.maker === currentUser.accountId) {
-            for (let i = 0; i < filtredOrders.length; i++) {
-              if (
-                filtredOrders[i].order.creation_time ===
-                finishedOrder.order.creation_time
-              ) {
-                finishedOrder.order.buy_amount =
-                  filtredOrders[i].order.buy_amount;
-                finishedOrder.order.sell_amount =
-                  filtredOrders[i].order.sell_amount;
-
-                filtredOrders.splice(i, 1);
-
-                filtredOrders.push(finishedOrder);
-              }
-            }
+              result.push({
+                id: item.order_id,
+                type: item.order.action,
+                buy_token: buyTokenSymbol.symbol,
+                buy_token_address: buyTokenAddress,
+                buy_amount: parsedBuyAmount,
+                sell_token: sellTokenSymbol.symbol,
+                sell_token_address: sellTokenAddress,
+                sell_amount: parsedSellAmount,
+                status: item.order.status,
+                creationTime: item.order.creation_time,
+              });
+            })(order);
           }
         }
-      }
-      for (const obj of filtredOrders) {
-        obj.order.hasOwnProperty("matcher") &&
-        obj.order.matcher === currentUser.accountId
-          ? result.push({
-              id: obj.order_id,
-              type: obj.order.action,
-              buy_token: matchedBuyToken.symbol,
-              buy_amount: obj.order.buy_amount,
-              sell_token: matchedSellToken.symbol,
-              sell_amount: obj.order.sell_amount,
-              status: obj.order.status,
-              creationTime: obj.order.creation_time,
-            })
-          : result.push({
-              id: obj.order_id,
-              type: obj.order.action,
-              buy_token: buyTokenSymbol.symbol,
-              buy_amount: obj.order.buy_amount,
-              sell_token: sellTokenSymbol.symbol,
-              sell_amount: obj.order.sell_amount,
-              status: obj.order.status,
-              creationTime: obj.order.creation_time,
-            });
-      }
-    }
 
+        if (finishedOrdersByUser.length !== 0) {
+          for (const finishedOrder of finishedOrdersByUser) {
+            (async (item) => {
+              const parsedBuyAmount = await toPrecision(
+                item.order.buy_amount,
+                item.order.buy_token
+              );
+              const parsedSellAmount = await toPrecision(
+                item.order.sell_amount,
+                item.order.sell_token
+              );
+              if (item.order.maker === currentUser.accountId) {
+                result.push({
+                  id: item.order_id,
+                  type: item.order.action,
+                  buy_token: buyTokenSymbol.symbol,
+                  buy_token_address: buyTokenAddress,
+                  buy_amount: parsedBuyAmount,
+                  sell_token: sellTokenSymbol.symbol,
+                  sell_token_address: sellTokenAddress,
+                  sell_amount: parsedSellAmount,
+                  status: item.order.status,
+                  creationTime: item.order.creation_time,
+                });
+              } else if (item.order.matcher === currentUser.accountId) {
+                result.push({
+                  id: item.order_id,
+                  type: item.order.action === "buy" ? "sell" : "buy",
+                  buy_token: sellTokenSymbol.symbol,
+                  buy_token_address: sellTokenAddress,
+                  buy_amount: parsedSellAmount,
+                  sell_token: buyTokenSymbol.symbol,
+                  sell_token_address: buyTokenAddress,
+                  sell_amount: parsedBuyAmount,
+                  status: item.order.status,
+                  creationTime: item.order.creation_time,
+                });
+              }
+            })(finishedOrder);
+          }
+        }
+      });
+    });
+    console.log("RESULT", result);
     setOrders(result);
   };
 
@@ -448,7 +444,7 @@ export const MainApp = ({
       const currentAction = 1;
       const slicedOrders = sliceOrders(currentAction);
       localStorage.setItem("seemoreAction", (currentAction + 1).toString());
-      setOrderComponent(<Orders orders={slicedOrders} />);
+      setOrderComponent(<Orders orders={slicedOrders} contract={contract} />);
       return;
     }
 
@@ -458,7 +454,7 @@ export const MainApp = ({
     console.log(slicedOrders);
 
     localStorage.setItem("seemoreAction", (currentAction + 1).toString());
-    setOrderComponent(<Orders orders={slicedOrders} />);
+    setOrderComponent(<Orders orders={slicedOrders} contract={contract} />);
   };
 
   const getFtBalances = async () => {
@@ -597,10 +593,6 @@ export const MainApp = ({
 
     if (reversedOrders !== null) {
       reversedOrders.map((reversedOrder) => {
-        // const ordersCondition =
-        //   order.order.buy_amount === msg.sell_amount &&
-        //   order.order.sell_amount === msg.buy_amount &&
-        //   order.order.maker !== currentUser.accountId;
         const revesredOrderCondition =
           reversedOrder.order.buy_amount === msg.sell_amount &&
           reversedOrder.order.sell_amount === msg.buy_amount &&
@@ -608,6 +600,7 @@ export const MainApp = ({
         if (revesredOrderCondition) {
           msg = {
             order_id: reversedOrder.order_id,
+            matching_time: Date.now().toString(),
           };
         }
       });
@@ -650,7 +643,7 @@ export const MainApp = ({
           ? userAction === "buy"
             ? {
                 receiver_id: config.contractName,
-                amount: msg.buy_amount,
+                amount: msg.sell_amount,
                 msg: JSON.stringify(msg),
               }
             : {
@@ -695,10 +688,16 @@ export const MainApp = ({
 
   const parseAmount = async (orders) => {
     for (const order of orders) {
-      order.order.buy_amount = await toPrecision(order.order.buy_amount, order.order.buy_token);
-      order.order.sell_amount = await toPrecision(order.order.sell_amount, order.order.sell_token);
+      order.order.buy_amount = await toPrecision(
+        order.order.buy_amount,
+        order.order.buy_token
+      );
+      order.order.sell_amount = await toPrecision(
+        order.order.sell_amount,
+        order.order.sell_token
+      );
     }
-  }
+  };
 
   const composeKey = (sell_token, buy_token) => {
     const result = sell_token + "#" + buy_token;
@@ -1118,7 +1117,11 @@ export const MainApp = ({
             <div className="orders">
               <h5 className="component-heading">My orders</h5>
               <div id="orders-list">
-                {orderComponent ? orderComponent : <Orders orders={orders} />}
+                {orderComponent ? (
+                  orderComponent
+                ) : (
+                  <Orders orders={orders} contract={contract} />
+                )}
               </div>
               {orders !== null && orders.length > 5 ? (
                 <div className="seemore-block">

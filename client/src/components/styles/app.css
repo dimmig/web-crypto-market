@@ -1,0 +1,906 @@
+html,
+body {
+  overflow-x: hidden;
+  padding: 0;
+  background-color: #e5e5e5;
+}
+
+ul {
+  margin-top: 5%;
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: #000000;
+}
+
+.app-logo {
+  margin: 0;
+  height: 50%;
+  margin-top: 10px;
+}
+
+#wrapper {
+  width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.connect-wallet-button {
+  font-weight: 500;
+}
+
+.connect-wallet-button:hover {
+  background-color: #567d9e;
+}
+
+.btn-block {
+  margin-right: 0;
+}
+
+.logged-in-user-icon {
+  margin-right: 5%;
+  margin-bottom: 0;
+  margin-top: 5px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: row;
+}
+
+.current-user-name {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  outline: none;
+  font-family: "Rany";
+  font-weight: 200;
+  opacity: 0.5;
+  font-size: 24px;
+  border: none;
+  background-color: #e5e5e5;
+  margin-right: 5%;
+}
+
+.current-user-name svg {
+  opacity: 0.5;
+}
+
+.dd-list {
+  position: absolute;
+  width: 200px;
+}
+
+.dd-tokens-list {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.tokens-list {
+  display: flex;
+  flex-direction: column;
+  margin-left: 5%;
+  margin-bottom: 0;
+  overflow: hidden;
+  margin-top: 30px;
+  height: 230px;
+}
+
+.tokens-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 5%;
+}
+
+.tokens-icon {
+  width: 24px;
+  height: 24px;
+  user-select: none;
+  margin-right: 10px;
+  margin-top: 3px;
+}
+
+.dd-tokens-button-item {
+  display: flex;
+  flex-direction: row;
+  outline: none;
+  border: none;
+  background-color: #e5e5e5;
+  font-family: "Rany";
+  font-weight: 200;
+  font-size: 20px;
+  opacity: 0.7;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.dd-tokens-button-item:hover {
+  background-color: #1aafa6;
+  color: #fff;
+}
+
+.dd-closed-icon {
+  transition: all 0.1s ease;
+  transform: rotate(180deg);
+}
+
+.dd-opened-icon {
+  transition: all 0.1s ease;
+}
+
+.dd-list-item {
+  width: 100%;
+  outline: none;
+  border: none;
+  background-color: #e5e5e5;
+  font-family: "Rany";
+  font-weight: 200;
+  font-size: 20px;
+  opacity: 0.5;
+}
+
+.log-in-first {
+  font-family: "Rany";
+  color: #1aafa6;
+  margin: 0;
+  font-size: 30px;
+  text-decoration: underline 0.1em #e5e5e5;
+  transition: text-decoration-color 300ms;
+}
+
+.log-in-first:hover {
+  text-decoration-color: #1aafa6;
+  cursor: pointer;
+}
+
+.text-balances-row a {
+  text-decoration: none;
+}
+
+.no-orders-text {
+  width: 200px;
+  margin: 0;
+  font-size: 30px;
+}
+
+.no-balances-text {
+  width: 235px;
+  margin-left: 10%;
+  margin: 0;
+  font-size: 30px;
+}
+
+.text-orders-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 5%;
+}
+
+.text-balances-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 5%;
+  margin-left: 10%;
+}
+
+.switcher {
+  display: flex;
+  flex-direction: row;
+  margin-top: 5%;
+  margin-left: 50px;
+  width: 50%;
+  min-width: 260px;
+}
+.switcher button {
+  width: 317px;
+  display: inline-block;
+  justify-content: center;
+  font-family: "Rany";
+  font-size: 20px;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  background-color: #e5e5e5;
+  border: none;
+}
+
+@keyframes border_trans {
+  100% {
+    transform: translateX(20px);
+  }
+}
+
+.buy::after {
+  content: "";
+  display: block;
+  height: 1px;
+  background: #1aafa6;
+  animation: border_trans 0.2s forwards;
+}
+
+.buy-checkmark {
+  height: 16px;
+  width: 16px;
+  margin: 0 auto 25%;
+}
+
+.sell-checkmark {
+  width: 15px;
+  height: 15px;
+  margin: 0 auto 30%;
+}
+
+.small-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 3%;
+  background-color: #e6e6e6;
+  box-shadow: none;
+  transition: background-color 0.2s;
+  display: inline-block;
+  position: relative;
+}
+
+.flex-sell-icon {
+  display: flex;
+  justify-content: center;
+  box-shadow: none;
+  background-color: #e37a7a;
+}
+.flex-buy-icon {
+  display: flex;
+  justify-content: center;
+  box-shadow: none;
+  background-color: #1aafa6;
+}
+
+.blue-bg {
+  background-color: #1aafa6;
+  box-shadow: 0px 7px 9px rgba(26, 175, 166, 0.12);
+}
+
+.red-bg {
+  background-color: #e37a7a;
+  box-shadow: 0px 7px 9px rgba(255, 36, 120, 0.12);
+}
+
+.row {
+  width: 100%;
+}
+
+.all {
+  width: 100%;
+  min-width: 700px;
+  height: 250px;
+  display: flex;
+  flex-direction: row;
+}
+
+.open-order {
+  position: relative;
+  margin-left: 5%;
+  display: flex;
+  flex-direction: row;
+  width: 644px;
+  height: 250px;
+}
+
+.input {
+  margin-top: 10%;
+  display: flex;
+  flex-direction: row;
+  width: 480px;
+  margin-bottom: 15%;
+}
+
+.open-order input::placeholder {
+  font-size: 34px;
+  opacity: 0.2;
+  font-weight: 100;
+}
+
+.grey-input {
+  opacity: 0.2;
+}
+
+.open-order input {
+  width: 20%;
+  height: 31px;
+  width: 200px;
+  background-color: #e5e5e5;
+  outline: none;
+  border: none;
+  font-family: "Rany";
+  font-weight: 300;
+  font-size: 34px;
+  position: relative;
+}
+
+.preview-text {
+  width: 70px;
+}
+
+.input-preview {
+  font-family: "Rany";
+  font-size: 14px;
+  opacity: 0.3;
+  letter-spacing: 0.05em;
+  font-weight: 300;
+  margin-top: 15px;
+}
+
+.max-amount {
+  font-family: "Rany";
+  font-size: 12px;
+  font-weight: 300;
+  opacity: 0.2;
+  letter-spacing: 0.05em;
+  margin-top: 15px;
+  margin-left: 15px;
+}
+
+.max {
+  color: #1aafa6;
+  opacity: 0.7;
+  margin-left: 10px;
+}
+
+.near-coin-icon {
+  width: 11px;
+  height: 11px;
+  margin-left: 15%;
+  margin-top: 17px;
+  user-select: none;
+}
+
+.coin-text {
+  opacity: 0.6;
+  margin-left: 10px;
+  letter-spacing: 0.05em;
+}
+
+.usdt-coin-icon {
+  width: 14px;
+  height: 14px;
+  margin-left: 15%;
+  margin-top: 15px;
+  user-select: none;
+}
+
+.info {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+}
+
+.order-btn-block {
+  margin-left: 50px;
+  width: 648px;
+  height: 46px;
+  min-width: 520px;
+}
+
+.error-message {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-message-default-text {
+  font-size: 24px;
+  font-family: "Rany";
+  font-weight: 400;
+  margin-top: 15px;
+  color: #ff0000;
+  align-items: center;
+}
+
+.error-text {
+  font-size: 20px;
+  color: #e37a7a;
+  margin-bottom: 0;
+  margin-left: 5px;
+  margin-top: 5px;
+  font-weight: 500;
+}
+
+.order-btn {
+  display: inline-block;
+  position: relative;
+  width: 600px;
+  height: 47px;
+  padding: 12px 13px 12px 13px;
+  border-radius: 42px;
+  background-color: #e5e5e5;
+  outline: none;
+  border: 1px solid #1aafa6;
+  transition: all 0.2s;
+  overflow: hidden;
+  color: #1aafa6;
+  z-index: 1;
+}
+
+.order-btn::before {
+  position: absolute;
+  content: "";
+  width: 0%;
+  height: 100%;
+  left: 0;
+  bottom: 0;
+  background-color: #1aafa6;
+  transition: all 0.2s;
+  border-radius: 42px;
+  z-index: -1;
+}
+
+.order-btn:hover {
+  color: #fff;
+}
+
+.order-btn:hover::before {
+  width: 100%;
+}
+
+.order-book {
+  position: relative;
+  float: right;
+  min-width: 455px;
+  min-height: 360px;
+  margin-left: 5%;
+  z-index: 0;
+}
+
+.bottom-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.blured-bg {
+  filter: blur(2px);
+  -webkit-filter: blur(2px);
+  user-select: none;
+}
+
+.order-book-heading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 5%;
+}
+
+.order-type-switcher-btn {
+  width: 60px;
+  margin-bottom: 5%;
+  outline: none;
+  border: none;
+  background-color: #e5e5e5;
+  font-family: "Rany";
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  font-weight: 300;
+  opacity: 0.5;
+  transition: all 0.1s ease;
+}
+
+.order-type-switcher-btn-logged-out {
+  width: 60px;
+  margin-bottom: 5%;
+  outline: none;
+  border: none;
+  background-color: #e5e5e5;
+  font-family: "Rany";
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  font-weight: 300;
+  opacity: 0.5;
+  transition: all 0.1s ease;
+}
+
+.order-type-switcher-btn-logged-out:hover {
+  cursor: auto;
+}
+
+.order-type-buy {
+  background-color: #1aafa6;
+  font-weight: 500;
+  opacity: 1;
+  color: #fff;
+}
+
+.order-type-sell {
+  background-color: #e37a7a;
+  font-weight: 500;
+  opacity: 1;
+  color: #fff;
+}
+
+.order-book-block {
+  width: 300px;
+  height: 210px;
+
+  border-radius: 5%;
+}
+
+.order-book-row {
+  width: 260px;
+}
+
+.order-book-buy {
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+}
+
+.order-book-ul {
+  padding: 0;
+  margin: 0;
+}
+
+.buy-type {
+  color: #1aafa6;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.normal-type {
+  color: #000;
+  opacity: 0.5;
+}
+
+.sell-type {
+  color: #e37a7a;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.order-book-item {
+  display: flex;
+  flex-direction: column;
+  margin-right: 100px;
+  width: 1px;
+  height: 20px;
+}
+
+.component-heading {
+  font-family: "Rany";
+  font-size: 24px;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+
+.tokens-dd {
+  width: 127px;
+  height: 28px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 20px;
+  outline: none;
+  background-color: rgba(228, 227, 227, 0.712);
+  border: 1px solid #ebebeb;
+  font-family: "Rany";
+  font-size: 14px;
+  opacity: 0.6;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  margin-bottom: 5%;
+  transition: all 0.2s ease;
+}
+
+.tokens-dd-logged-out {
+  width: 127px;
+  height: 28px;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 20px;
+  outline: none;
+  background-color: rgba(228, 227, 227, 0.712);
+  border: 1px solid #ebebeb;
+  font-family: "Rany";
+  font-size: 14px;
+  opacity: 0.6;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  margin-bottom: 5%;
+}
+
+.tokens-dd-logged-out:hover {
+  cursor: auto;
+}
+
+.tokens-dd:hover {
+  background-color: #adadad;
+  color: #e5e5e5;
+}
+
+.order-book-text-columns {
+  font-family: "Rany";
+  font-size: 14px;
+  font-weight: 200;
+  opacity: 0.5;
+  margin-right: 5%;
+}
+
+.order-book-columns-names {
+  display: flex;
+  flex-direction: row;
+}
+
+@keyframes vis {
+  100% {
+    transform: translateX(20px);
+  }
+}
+
+.not-visible {
+  display: none;
+  opacity: 0;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  font-family: "Rany";
+  font-weight: 300;
+  font-size: 14px;
+  margin-bottom: 10px;
+  width: 700px;
+  height: 40px;
+}
+
+.order-main-data {
+  display: flex;
+  flex-direction: row;
+  width: 500%;
+  margin-left: 5px;
+}
+
+.order-main-data p {
+  font-family: "Rany";
+  font-size: 14px;
+  font-weight: 200;
+}
+
+.list-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 200px;
+}
+
+.orders {
+  width: 827px;
+  height: 250px;
+}
+
+.orders h5 {
+  margin-left: 10%;
+}
+
+.for-text-block {
+  display: flex;
+  flex-direction: row;
+  width: 200px;
+}
+
+.for-text {
+  font-family: "Rany";
+  font-weight: 300;
+  opacity: 0.4;
+  z-index: 1;
+  margin-left: 5px;
+}
+
+.orders-row {
+  display: flex;
+  flex-direction: row;
+  width: 700px;
+  height: 50px;
+}
+
+.order-action-type {
+  display: flex;
+  flex-direction: row;
+  width: 40%;
+}
+.amount-price-data {
+  margin-left: 5px;
+}
+
+.cancell-btn-block {
+  width: 250px;
+  margin-right: 30%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.cancell-order-button {
+  margin-left: 40px;
+  margin-bottom: 5%;
+  outline: none;
+  border: none;
+  font-family: "Rany";
+  font-size: 14px;
+  font-weight: 200;
+  background-color: #e5e5e5;
+  opacity: 0.7;
+  letter-spacing: 0.05em;
+  transition: all 0.1s ease;
+}
+
+.creation-time {
+  margin-bottom: 5%;
+}
+
+.cancell-order-button:hover {
+  background-color: #d1d1d1;
+}
+
+.no-orders {
+  font-family: "Rany";
+  font-size: 24px;
+  text-align: center;
+  width: 30%;
+  margin-left: 70px;
+  opacity: 0.5;
+  color: #adadad;
+  font-weight: 200;
+}
+
+.orders-checkmark {
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  margin: 0 auto;
+  user-select: none;
+}
+
+.buy-orders-checkmark {
+  height: 17px;
+  width: 17px;
+}
+
+.finished-order-status {
+  color: #1aafa6;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  margin-left: 100px;
+}
+
+.new-order-status {
+  color: #1aaf7d;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  margin-left: 50px;
+}
+
+.new-order-status-block {
+  margin-left: 50px;
+}
+
+.cancelled-order-status {
+  color: #c4c4c4;
+  letter-spacing: 0.05em;
+  font-size: 12px;
+  margin-left: 100px;
+}
+
+.order-creation-date {
+  width: 200px;
+  margin-left: 20px;
+}
+
+.seemore-block {
+  width: 600px;
+  display: flex;
+  justify-content: center;
+}
+
+.seemore-button {
+  margin-left: 10%;
+  width: 200px;
+  outline: none;
+  border: none;
+  background-color: #e5e5e5;
+  font-family: "Rany";
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 5%;
+  color: #1aafa6;
+  transition: all 0.1s ease;
+}
+
+.seemore-button:hover {
+  opacity: 0.3;
+}
+
+.balances {
+  width: 644px;
+  height: 306px;
+  margin-top: 5%;
+}
+
+.balances h2 {
+  font-family: "Rany";
+  letter-spacing: 0.05em;
+  font-size: 24px;
+  font-weight: 300;
+  margin-left: 10%;
+}
+
+.balance-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.balance-list {
+  margin-bottom: 5%;
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+}
+
+.balance-list p {
+  font-family: "Rany";
+  font-weight: 300;
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+.balance-coin-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  user-select: none;
+  margin-left: 5%;
+}
+
+.balance-amount {
+  margin-left: 90%;
+  margin-right: 10px;
+}
+
+.wallet-button {
+  position: absolute;
+  transition: all 0.2s ease;
+  width: 157px;
+  height: 39px;
+  letter-spacing: 0.05em;
+  background-color: #1aafa6;
+  box-shadow: 0px 7px 9px rgba(26, 175, 166, 0.12);
+  cursor: pointer;
+  outline: none;
+  border: 1px solid #fff;
+  color: #fff;
+  font-family: "Rany";
+  font-weight: 500;
+  left: 35%;
+  top: 40%;
+  z-index: 2;
+}
+
+.wallet-button:hover {
+  background-color: #0d8a81ce;
+}
+
+.order-book-wallet-button {
+  top: 60%;
+}
+
+.center-button {
+  position: relative;
+  user-select: all;
+}
