@@ -1,5 +1,5 @@
-use near_sdk::env;
 use crate::ERR04_PERMISSION_DENIED;
+use near_sdk::env;
 
 pub fn assert_owner() {
     assert_eq!(

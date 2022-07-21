@@ -8,3 +8,4 @@ pub const ERR07_WRONG_MSG_FORMAT: &str = "E07: wrong msg format";
 pub const ERR08_NOT_CORRECT_PROMISE_RESULT_COUNT: &str = "E08: not correct promise result count";
 pub const ERR09_DEPOSIT_FAILED: &str = "E09: deposit failed";
 pub const ERR10_NOT_ENOUGH: &str = "E10: not enough FT";
+pub const ERR11_NOT_VALID_ORDER_STATUS: &str = "E11: not valid order status";

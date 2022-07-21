@@ -1,6 +1,6 @@
-use near_sdk::{AccountId, ext_contract};
-use near_sdk::json_types::{U128, U64};
 use crate::OrderId;
+use near_sdk::json_types::{U128, U64};
+use near_sdk::{ext_contract, AccountId};
 
 #[ext_contract(ft_token)]
 pub trait FtToken {
@@ -23,6 +23,7 @@ pub trait ExtSelf {
         sell_token: AccountId,
         buy_token: AccountId,
         order_id: OrderId,
+        orderbook_id: OrderId
     );
 
     fn callback_after_deposit(
@@ -30,10 +31,14 @@ pub trait ExtSelf {
         fee: U128,
         sell_token: AccountId,
         buy_token: AccountId,
-        order_id: OrderId
+        order_id: OrderId,
+        orderbook_id: OrderId
     );
 
     fn callback_on_send_tokens_to_ext_account(
-        &self, token: AccountId, receiver: AccountId, amount: U128
+        &self,
+        token: AccountId,
+        receiver: AccountId,
+        amount: U128,
     );
 }
