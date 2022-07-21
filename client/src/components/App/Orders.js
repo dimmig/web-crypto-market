@@ -6,10 +6,6 @@ import "../styles/app.css";
 import BN from "bn.js";
 
 export const Orders = (props) => {
-  const [orderId, setOrderId] = useState("");
-  const [sellToken, setSellToken] = useState("");
-  const [buyToken, setBuyToken] = useState("");
-
   if (props.orders === null || props.orders.length === 0) {
     return (
       <div>
@@ -98,48 +94,66 @@ export const Orders = (props) => {
           )}
 
           <div className="order-creation-date">
-            <p>
-              {item.creationTime && item.status === "New" ? (
-                <span className="cancell-btn-block">
-                  <span className="creation-time">
+            {!item.creationTime ? (
+              <></>
+            ) : (
+              <p>
+                {item.creationTime && item.status === "New" ? (
+                  <span className="cancell-btn-block">
+                    <span className="creation-time">
+                      {
+                        new Date(parseInt(item.creationTime))
+                          .toString()
+                          .split("G")[0]
+                      }
+                    </span>
+
+                    <button
+                      className="cancell-order-button"
+                      onClick={async () => {
+                        const ONE_YOCTO = 1;
+                        const id = item.id;
+                        const sellToken = item.sell_token_address;
+                        const buyToken = item.buy_token_address;
+
+                        const orderBookOrder =
+                          await props.contract.get_orders_to_orderbook({
+                            sell_token: sellToken,
+                            buy_token: buyToken,
+                          });
+
+                        const orderFromOrderBook = orderBookOrder.filter(
+                          (order) =>
+                            order.order.buy_amount === item.buy_amount &&
+                            order.order.sell_amount === item.sell_amount
+                        );
+                          const orderBookOrderId = orderFromOrderBook[0].order_id;
+                          
+                        await props.contract.remove_order(
+                          {
+                            sell_token: sellToken,
+                            buy_token: buyToken,
+                            order_id: id,
+                            orderbook_order_id: orderBookOrderId
+                          },
+                          new BN(300000000000000)
+                        );
+                      }}
+                    >
+                      Cancell
+                    </button>
+                  </span>
+                ) : (
+                  <>
                     {
                       new Date(parseInt(item.creationTime))
                         .toString()
                         .split("G")[0]
                     }
-                  </span>
-
-                  <button
-                    className="cancell-order-button"
-                    onClick={async () => {
-                      const ONE_YOCTO = 1;
-                      const id = item.id;
-                      const sellToken = item.sell_token_address;
-                      const buyToken = item.buy_token_address;
-
-                      await props.contract.remove_order(
-                        {
-                          sell_token: sellToken,
-                          buy_token: buyToken,
-                          order_id: id,
-                        },
-                       new BN(300000000000000),
-                      );
-                    }}
-                  >
-                    Cancell
-                  </button>
-                </span>
-              ) : (
-                <>
-                  {
-                    new Date(parseInt(item.creationTime))
-                      .toString()
-                      .split("G")[0]
-                  }
-                </>
-              )}
-            </p>
+                  </>
+                )}
+              </p>
+            )}
           </div>
 
           {item.status !== "Cancelled" && item.status !== "Finished" ? (

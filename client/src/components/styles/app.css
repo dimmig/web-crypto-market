@@ -78,6 +78,7 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   border-radius: 10px;
 }
 
@@ -545,7 +546,20 @@ a {
 .order-book-ul {
   padding: 0;
   margin: 0;
+  max-height: 240px;
+  width: 300px;
 }
+
+.scrollable-order-book-ul {
+  padding: 0;
+  margin: 0;
+  max-height: 240px;
+  width: 300px;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #d6d6d6 rgba(255, 255, 255, 0.192);
+}
+
 
 .buy-type {
   color: #1aafa6;
@@ -720,8 +734,7 @@ a {
 }
 
 .cancell-btn-block {
-  width: 250px;
-  margin-right: 30%;
+  width: 280px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -737,6 +750,7 @@ a {
   font-weight: 200;
   background-color: #e5e5e5;
   opacity: 0.7;
+  text-decoration: underline;
   letter-spacing: 0.05em;
   transition: all 0.1s ease;
 }
@@ -755,6 +769,17 @@ a {
   text-align: center;
   width: 30%;
   margin-left: 70px;
+  opacity: 0.5;
+  color: #adadad;
+  font-weight: 200;
+}
+
+.no-orders-book {
+  font-family: "Rany";
+  font-size: 20px;
+  text-align: center;
+  width: 100%;
+  margin-top: 20px;
   opacity: 0.5;
   color: #adadad;
   font-weight: 200;
@@ -800,7 +825,6 @@ a {
 
 .order-creation-date {
   width: 200px;
-  margin-left: 20px;
 }
 
 .seemore-block {

@@ -18,6 +18,7 @@ import "../styles/app.css";
 import { Balances } from "./Balances";
 import { OrderBook } from "./OrderBook";
 import tokenConfig from "../../config/tokenConfig";
+import { config } from "dotenv";
 
 const BN = require("bn.js");
 
@@ -119,8 +120,7 @@ export const MainApp = ({
   const [errorText, setErrorText] = useState("");
   const [orders, setOrders] = useState(null);
   const [orderComponent, setOrderComponent] = useState();
-  const [id, setId] = useState("");
-  //const [orderMsg, setOrderMsg] = useState(null);
+  const [tokensListAction, setTokensListAction] = useState();
 
   let SHORT_NAME = "";
   if (currentUser) {
@@ -134,17 +134,54 @@ export const MainApp = ({
   useEffect(() => {
     if (currentUser) {
       getFtBalances();
-
       getPairs();
       getAllOrders();
     }
     sortOrders();
   }, []);
 
-  // const test = async () => {
-  //   const orders = await contract.get_orders({sell_token: "wusdt.testnet", buy_token: "galag.testnet"});
-  //   console.log(orders)
-  // }
+  useEffect(() => {
+    if (currentUser) {
+      let buyToken;
+      let sellToken;
+      const result = [];
+
+      if (
+        localStorage.getItem("wusdtData") &&
+        localStorage.getItem("notStableToken") &&
+        orderBookAction === "buy"
+      ) {
+        sellToken = JSON.parse(localStorage.getItem("wusdtData")).address;
+        buyToken = JSON.parse(localStorage.getItem("notStableToken")).address;
+      } else if (
+        localStorage.getItem("wusdtData") &&
+        localStorage.getItem("notStableToken") &&
+        orderBookAction === "sell"
+      ) {
+        sellToken = JSON.parse(localStorage.getItem("notStableToken")).address;
+        buyToken = JSON.parse(localStorage.getItem("wusdtData")).address;
+      } else {
+        return setOrderBook(null);
+      }
+
+      const ordersToMatch = contract.get_orders_to_orderbook({
+        sell_token: sellToken,
+        buy_token: buyToken,
+      });
+
+      Promise.all([ordersToMatch]).then((value) => {
+        const orders = value[0];
+
+
+        return setOrderBook(orders);
+      });
+
+      //  if (result.length === ordersToMatch.length) {
+
+      //  }
+      setOrderBook(undefined);
+    }
+  }, [orderBookAction, tokensListAction]);
 
   const initTokenContract = async () => {
     let stableTokenConfig;
@@ -161,7 +198,6 @@ export const MainApp = ({
       stableTokenConfig.contractName = currentNotStableToken.address;
     }
 
-    console.log("CONFIG", stableTokenConfig);
     const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
 
     const near = await nearAPI.connect({ keyStore, ...stableTokenConfig });
@@ -219,15 +255,24 @@ export const MainApp = ({
           });
           setNotStableTokenData(result);
 
+
           setCurrentNotStableToken({
             symbol: tokenMeta.symbol,
             address: tokenAddress,
           });
-        }
 
-        setTokens(result);
+          localStorage.setItem(
+            "notStableToken",
+            JSON.stringify({
+              symbol: tokenMeta.symbol,
+              address: tokenAddress,
+            })
+          );
+        }
       }
     }
+    setTokens(result);
+    //getOrdersToOrderBook();
   };
 
   const onDropDownClick = () => {
@@ -264,7 +309,7 @@ export const MainApp = ({
         "remove_order",
         "internal_remove_order",
       ],
-      successUrl: "http://localhost:3000/web-crypto-market/#/app",
+      successUrl: "https://jove-06.github.io/web-crypto-market/#/app",
       failureUrl: null,
     });
   };
@@ -280,8 +325,6 @@ export const MainApp = ({
       localStorage.setItem("seemoreAction", "2");
     }
 
-    console.log("FINISHED PAIRS", await contract.get_pairs());
-
     const pairs = await contract.get_pairs(); //!
     const finishedPairs = await contract.get_finished_pairs();
     finishedPairs.map((orderPair) => {
@@ -290,7 +333,7 @@ export const MainApp = ({
       }
     });
 
-    console.log(pairs);
+
     if (pairs.length === 0) {
       return setOrders(null);
     }
@@ -315,16 +358,14 @@ export const MainApp = ({
       });
 
       const finishedOrders = contract.get_filled_orders({
-        sell_token: buyTokenAddress,
-        buy_token: sellTokenAddress,
+        sell_token: sellTokenAddress,
+        buy_token: buyTokenAddress,
       });
 
       Promise.all([allOrders, finishedOrders]).then((value) => {
         const allOrders = value[0];
         const finishedOrders = value[1];
         let ordersByUser = [];
-        console.log("NOT PARSED FINISHED ORDERS", finishedOrders);
-        console.log("NOT PARSED ORDERS", allOrders);
 
         if (allOrders === null && finishedOrders === null) {
           return setOrders(null);
@@ -345,9 +386,6 @@ export const MainApp = ({
           );
         }
 
-        console.log("ORDERS", ordersByUser);
-        console.log("FINISHED ORDERS", finishedOrdersByUser);
-
         if (ordersByUser.length !== 0) {
           for (const order of ordersByUser) {
             (async (item) => {
@@ -359,8 +397,6 @@ export const MainApp = ({
                 item.order.sell_amount,
                 item.order.sell_token
               );
-
-              console.log(item.order);
 
               result.push({
                 id: item.order_id,
@@ -421,7 +457,7 @@ export const MainApp = ({
         }
       });
     });
-    console.log("RESULT", result);
+
     setOrders(result);
   };
 
@@ -438,7 +474,6 @@ export const MainApp = ({
     const numberOfOrders = orders.length;
     const numberOfPaginationActions = Math.ceil(numberOfOrders / 5);
     const currentAction = parseInt(localStorage.getItem("seemoreAction"));
-    console.log(currentAction);
 
     if (currentAction > numberOfPaginationActions) {
       const currentAction = 1;
@@ -448,10 +483,7 @@ export const MainApp = ({
       return;
     }
 
-    console.log(currentAction);
-
     const slicedOrders = sliceOrders(currentAction);
-    console.log(slicedOrders);
 
     localStorage.setItem("seemoreAction", (currentAction + 1).toString());
     setOrderComponent(<Orders orders={slicedOrders} contract={contract} />);
@@ -473,6 +505,14 @@ export const MainApp = ({
           icon: metadata.icon,
           address: tokens[i],
         });
+        localStorage.setItem(
+          "wusdtData",
+          JSON.stringify({
+            symbol: metadata.symbol,
+            icon: metadata.icon,
+            address: tokens[i],
+          })
+        );
       }
 
       result.push({
@@ -485,13 +525,22 @@ export const MainApp = ({
     }
 
     setBalances(result);
+    localStorage.setItem("seemoreAction", 2);
   };
 
   const getFtTokens = async (accountId) => {
-    const res = await axios.get(
-      `${config.helperUrl}/account/${accountId}/likelyTokens`
+    const tokens = await axios.post(
+      "http://localhost:2400/",
+      { name: accountId },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
     );
-    return res.data;
+    
+
+      return tokens.data;
   };
 
   const toPrecision = async (value, tokenAddress, fixed = 6) => {
@@ -510,7 +559,7 @@ export const MainApp = ({
     const parsedPrice = parseFloat(userPrice);
 
     if (
-      (isNaN(parsedAmount) && isNaN(parsedPrice)) ||
+      (isNaN(userAmount) && isNaN(userPrice)) ||
       (userAmount === "" && userPrice === "")
     ) {
       errorBlock.classList.remove("not-visible");
@@ -524,7 +573,7 @@ export const MainApp = ({
       );
     }
 
-    if (isNaN(parsedAmount) || isNaN(parsedPrice)) {
+    if (isNaN(userAmount) || isNaN(userPrice)) {
       errorBlock.classList.remove("not-visible");
       return setErrorText(
         `incorrect ${isNaN(parsedAmount) ? "amount" : "price"}`
@@ -566,6 +615,7 @@ export const MainApp = ({
         userAction === "buy"
           ? await fromPrecision(userPrice, wUSDTTokenData.address)
           : await fromPrecision(userAmount, currentNotStableToken.address),
+      raw_sell_amount: userAction === "buy" ? userPrice : userAmount,
       buy_token:
         userAction === "buy"
           ? currentNotStableToken.address
@@ -574,6 +624,7 @@ export const MainApp = ({
         userAction === "buy"
           ? await fromPrecision(userAmount, currentNotStableToken.address)
           : await fromPrecision(userPrice, wUSDTTokenData.address),
+      raw_buy_amount: userAction === "buy" ? userAmount : userPrice,
       action: userAction,
       creation_time: Date.now().toString(),
       status: "New",
@@ -583,6 +634,28 @@ export const MainApp = ({
       sell_token: msg.sell_token,
       buy_token: msg.buy_token,
     });
+
+    const orderBookOrders = await contract.get_orders_to_orderbook({
+      sell_token: msg.buy_token,
+      buy_token: msg.sell_token,
+    });
+
+    let orderBookId;
+    if (orderBookOrders !== null) {
+      if (userAction === "buy") {
+        orderBookId = orderBookOrders.filter(
+          (order) =>
+            parseFloat(order.order.buy_amount) === parsedPrice &&
+            parseFloat(order.order.sell_amount) === parsedAmount
+        );
+      } else if (userAction === "sell") {
+        orderBookId = orderBookOrders.filter(
+          (order) =>
+            parseFloat(order.order.buy_amount) === parsedAmount &&
+            parseFloat(order.order.sell_amount) === parsedPrice
+        );
+      }
+    }
 
     let reversedOrders = await contract.get_orders({
       sell_token: msg.buy_token,
@@ -600,6 +673,7 @@ export const MainApp = ({
         if (revesredOrderCondition) {
           msg = {
             order_id: reversedOrder.order_id,
+            orderbook_id: orderBookId[0].order_id,
             matching_time: Date.now().toString(),
           };
         }
@@ -625,9 +699,6 @@ export const MainApp = ({
 
     localStorage.setItem("msg", JSON.stringify(msg));
 
-    console.log("ORDERS", orders);
-    console.log("MESSAGE", msg);
-
     initTokenContract().then(async ({ tokenContract, stableTokenConfig }) => {
       const parsedAmount = await fromPrecision(
         userAmount,
@@ -638,7 +709,7 @@ export const MainApp = ({
         stableTokenConfig.contractName
       );
 
-      const result = await tokenContract.ft_transfer_call(
+      await tokenContract.ft_transfer_call(
         msg.hasOwnProperty("sell_token")
           ? userAction === "buy"
             ? {
@@ -665,8 +736,6 @@ export const MainApp = ({
         TGAS,
         ONE_YOCTO
       );
-
-      console.log("RESULT", result);
     });
   };
 
@@ -827,13 +896,21 @@ export const MainApp = ({
                       />
                       <div className="info">
                         <p className="max-amount" id="max-amount">
-                          243 {notStableTokenData[0].symbol}
+                          243{" "}
+                          {
+                            notStableTokenData[notStableTokenData.length - 1]
+                              .symbol
+                          }
                         </p>
                         <p className="max-amount max">MAX</p>
 
-                        {notStableTokenData[0].icon ? (
+                        {notStableTokenData[notStableTokenData.length - 1]
+                          .icon ? (
                           <img
-                            src={notStableTokenData[0].icon}
+                            src={
+                              notStableTokenData[notStableTokenData.length - 1]
+                                .icon
+                            }
                             className="near-coin-icon"
                             id="near-coin-icon"
                           />
@@ -841,7 +918,10 @@ export const MainApp = ({
                           <></>
                         )}
                         <p className="max-amount coin-text" id="coin-text">
-                          {notStableTokenData[0].symbol}
+                          {
+                            notStableTokenData[notStableTokenData.length - 1]
+                              .symbol
+                          }
                         </p>
                       </div>
                     </div>
@@ -1009,6 +1089,14 @@ export const MainApp = ({
                                     symbol: token.symbol,
                                     address: token.address,
                                   });
+                                  setTokensListAction(token.symbol);
+                                  localStorage.setItem(
+                                    "notStableToken",
+                                    JSON.stringify({
+                                      symbol: token.symbol,
+                                      address: token.address,
+                                    })
+                                  );
                                 }}
                               >
                                 {token.symbol}/wUSDT
@@ -1126,7 +1214,7 @@ export const MainApp = ({
               {orders !== null && orders.length > 5 ? (
                 <div className="seemore-block">
                   <button className="seemore-button" onClick={getMoreOrders}>
-                    See more. . .
+                    See more. . . ({localStorage.getItem("seemoreAction") - 1})
                   </button>
                 </div>
               ) : (
