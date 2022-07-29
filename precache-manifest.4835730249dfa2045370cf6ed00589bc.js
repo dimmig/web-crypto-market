@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "0442413cb0aa633f2aa1",
+    "revision": "1762e845df39f1f674c9",
     "url": "/web-crypto-market/static/css/main.1ad23e00.chunk.css"
   },
   {
-    "revision": "0442413cb0aa633f2aa1",
-    "url": "/web-crypto-market/static/js/main.cb7cd639.chunk.js"
+    "revision": "1762e845df39f1f674c9",
+    "url": "/web-crypto-market/static/js/main.c4909239.chunk.js"
   },
   {
     "revision": "7ddf8772ca5c3e9f195a",
@@ -60,7 +60,7 @@ self.__precacheManifest = [
     "url": "/web-crypto-market/static/media/balance_icon.615db752.svg"
   },
   {
-    "revision": "5af6a8979ca7a0ad2623545a57e6a7e1",
+    "revision": "66a0931200922e8c361abcceb09afa67",
     "url": "/web-crypto-market/index.html"
   }
 ];
