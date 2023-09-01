@@ -160,7 +160,6 @@ export const MainApp = ({
       } else {
         return setOrderBook(null);
       }
-
       const ordersToMatch = contract.get_orders_to_orderbook({
         sell_token: sellToken,
         buy_token: buyToken,
@@ -173,9 +172,6 @@ export const MainApp = ({
         return setOrderBook(orders);
       });
 
-      //  if (result.length === ordersToMatch.length) {
-
-      //  }
       setOrderBook(undefined);
     }
   }, [orderBookAction, tokensListAction]);
@@ -310,7 +306,7 @@ export const MainApp = ({
       failureUrl: null,
     });
   };
-  const signOut = () => {
+  const signOut = () => { 
     wallet.signOut();
     localStorage.removeItem("messages");
     window.location.reload();

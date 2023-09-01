@@ -32,21 +32,6 @@ export const Orders = (props) => {
       } while (swapped);
       sortedByCreationDate = props.orders;
     }
-
-    // const sliceOrders = (currentAction) => {
-    //   const numberOfOrdersPerOneAction = 5;
-
-    //   const startIndex = (currentAction - 1) * numberOfOrdersPerOneAction;
-    //   const endIndex = startIndex + numberOfOrdersPerOneAction;
-
-    //   return sortedByCreationDate.slice(startIndex, endIndex)
-    // };
-
-    // const currentAction = localStorage.getItem("seemoreAction")
-    // const slicedOrders = sliceOrders(parseInt(currentAction));
-
-    // console.log(slicedOrders)
-
     const ordersList = sortedByCreationDate.map((item) => (
       <div className="orders-row" key={item.id}>
         {item.type === "buy" ? (

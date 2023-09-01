@@ -45,7 +45,7 @@ export class NearApi {
             } catch (err) {
                 // todo if we can't receive balance for token, we shouldn't try to do it every time
 
-                // console.log('failed to get ft_balance_of', err);
+                console.log('failed to get ft_balance_of', err);
             }
         }
 

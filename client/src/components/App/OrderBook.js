@@ -26,7 +26,6 @@ export const OrderBook = (props) => {
       // x % - orderFilling
 
       const width = (item.price * 100) / highestPrice;
-      //console.log(width);
 
       return (
         <div className="order-book-row" key={item.id}>

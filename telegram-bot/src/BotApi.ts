@@ -14,7 +14,6 @@ export class BotApi {
     async viewBalances(accountId: string, chatId: string) {
         const balances: TokenBalance[] = await this.api.getFTBalances(accountId);
 
-        console.log("balances", balances);
 
         const items = balances.map((b) => {
             const { tokenAccId, balance, symbol } = b;
