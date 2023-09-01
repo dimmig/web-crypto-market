@@ -36,7 +36,7 @@ export const Landing = () => {
       </div>
 
       <h1 className="heading">How to use</h1>
-      <div className="instructions">
+      <div className="instructions" id="instructions">
         <div className="block">
           <h1>1</h1>
 
@@ -91,7 +91,7 @@ export const Landing = () => {
       </div>
 
       <h1 className="heading">Our features</h1>
-      <div className="features">
+      <div className="features" id="features">
         <div className="features-text">
           <p className="default-text">
             Cupidatat est dolore Lorem incididunt minim anim excepteur in eu
@@ -144,7 +144,7 @@ export const Landing = () => {
       <div className="telegram-wrapper">
         <div className="telegram-bot">
           <h1 className="telegram-heading">Our telegram bot</h1>
-          <p className="default-text">
+          <p className="default-text" id="bot">
             Cupidatat est dolore Lorem incididunt minim anim excepteur in eu
             cillum cupidatat. Labore pariatur qui dolor velit. Dolor quis Lorem
             laboris deserunt ut Lorem nisi excepteur enim qui fugiat quis

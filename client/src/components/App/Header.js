@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../styles/landing.css";
 
 export const Header = (props) => {
-  console.log(window.innerWidth);
-  window.addEventListener("resize", () => {
+  function removeMenuBar() {
     if (window.innerWidth < 900 && document.getElementById("hrefs")) {
       document.querySelectorAll(".hrefs").forEach((el) => {
         el.classList.add("invisible");
@@ -16,7 +15,14 @@ export const Header = (props) => {
         el.classList.remove("invisible");
       });
     }
-  });
+  }
+
+  function scroll(id) {
+    document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+  }
+
+  window.addEventListener("resize", () => removeMenuBar());
+  useEffect(() => removeMenuBar(), []);
 
   return (
     <div className="header" id="header">
@@ -26,19 +32,15 @@ export const Header = (props) => {
         <h2 className="thin">Market</h2>
       </div>
       <div className="hrefs" id="hrefs">
-        <a className="hr" href="#/how_to_use">
+        <a className="hr" onClick={() => scroll("instructions")}>
           <p>How to use</p>
         </a>
 
-        <a className="hr" href="#/features">
+        <a className="hr" onClick={() => scroll("features")}>
           <p>Features</p>
         </a>
 
-        <a className="hr" href="#/our_team">
-          <p>Our team</p>
-        </a>
-
-        <a className="hr" href="#/telegram_bot">
+        <a className="hr" onClick={() => scroll("bot")}>
           <p>Telegram Bot</p>
         </a>
       </div>
