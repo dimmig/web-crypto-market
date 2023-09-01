@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import "../styles/app.css";
 
 export const OrderBook = (props) => {
@@ -20,20 +20,6 @@ export const OrderBook = (props) => {
     } else {
       result = props.orderBook;
     }
-
-    // let swapped = false;
-    // do {
-    //   swapped = false;
-    //   for (let i = orders.length - 1; i > 0; i--) {
-    //     if (orders[i].price > orders[i - 1].price) {
-    //       let temp = orders[i].price;
-    //       orders[i].price = orders[i - 1].price;
-    //       orders[i - 1].price = temp;
-    //       swapped = true;
-    //     }
-    //   }
-    // } while (swapped);
-
     const orderBook = result.map((item) => {
       const highestPrice = result[0].price;
       // 100 % - highestPrice

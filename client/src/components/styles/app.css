@@ -2,7 +2,7 @@ html,
 body {
   overflow-x: hidden;
   padding: 0;
-  background-color: #e5e5e5;
+  background-color: #f2f2f2;
 }
 
 ul {
@@ -60,7 +60,7 @@ a {
   opacity: 0.5;
   font-size: 24px;
   border: none;
-  background-color: #e5e5e5;
+  background-color: #f2f2f2;
   margin-right: 5%;
 }
 
@@ -112,7 +112,7 @@ a {
   flex-direction: row;
   outline: none;
   border: none;
-  background-color: #e5e5e5;
+  background-color: #f2f2f2;
   font-family: "Rany";
   font-weight: 200;
   font-size: 20px;
@@ -139,7 +139,7 @@ a {
   width: 100%;
   outline: none;
   border: none;
-  background-color: #e5e5e5;
+  background-color: #f2f2f2;
   font-family: "Rany";
   font-weight: 200;
   font-size: 20px;
@@ -151,7 +151,7 @@ a {
   color: #1aafa6;
   margin: 0;
   font-size: 30px;
-  text-decoration: underline 0.1em #e5e5e5;
+  text-decoration: underline 0.1em #f2f2f2;
   transition: text-decoration-color 300ms;
 }
 
@@ -208,7 +208,7 @@ a {
   font-size: 20px;
   letter-spacing: 0.05em;
   font-weight: 500;
-  background-color: #e5e5e5;
+  background-color: #f2f2f2;
   border: none;
 }
 
@@ -235,18 +235,20 @@ a {
 .sell-checkmark {
   width: 15px;
   height: 15px;
-  margin: 0 auto 30%;
+  position: absolute;
+  right: 0.3rem;
+  top: 0.3rem;
 }
 
 .small-icon {
   width: 24px;
   height: 24px;
-  margin-right: 3%;
   background-color: #e6e6e6;
   box-shadow: none;
   transition: background-color 0.2s;
-  display: inline-block;
   position: relative;
+  margin-right: 3%;
+  display: inline-block;
 }
 
 .flex-sell-icon {
@@ -315,7 +317,7 @@ a {
   width: 20%;
   height: 31px;
   width: 200px;
-  background-color: #e5e5e5;
+  background-color: #f2f2f2;
   outline: none;
   border: none;
   font-family: "Rany";
@@ -421,7 +423,7 @@ a {
   height: 47px;
   padding: 12px 13px 12px 13px;
   border-radius: 42px;
-  background-color: #e5e5e5;
+  background-color: #f2f2f2;
   outline: none;
   border: 1px solid #1aafa6;
   transition: all 0.2s;
@@ -485,7 +487,7 @@ a {
   margin-bottom: 5%;
   outline: none;
   border: none;
-  background-color: #e5e5e5;
+  background-color: #f2f2f2;
   font-family: "Rany";
   font-size: 14px;
   letter-spacing: 0.05em;
@@ -499,7 +501,7 @@ a {
   margin-bottom: 5%;
   outline: none;
   border: none;
-  background-color: #e5e5e5;
+  background-color: #f2f2f2;
   font-family: "Rany";
   font-size: 14px;
   letter-spacing: 0.05em;
@@ -559,7 +561,6 @@ a {
   scrollbar-width: thin;
   scrollbar-color: #d6d6d6 rgba(255, 255, 255, 0.192);
 }
-
 
 .buy-type {
   color: #1aafa6;
@@ -635,7 +636,7 @@ a {
 
 .tokens-dd:hover {
   background-color: #adadad;
-  color: #e5e5e5;
+  color: #f2f2f2;
 }
 
 .order-book-text-columns {
@@ -748,7 +749,7 @@ a {
   font-family: "Rany";
   font-size: 14px;
   font-weight: 200;
-  background-color: #e5e5e5;
+  background-color: #f2f2f2;
   opacity: 0.7;
   text-decoration: underline;
   letter-spacing: 0.05em;
@@ -838,7 +839,7 @@ a {
   width: 200px;
   outline: none;
   border: none;
-  background-color: #e5e5e5;
+  background-color: #f2f2f2;
   font-family: "Rany";
   font-size: 20px;
   font-weight: 500;

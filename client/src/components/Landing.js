@@ -155,34 +155,6 @@ export const Landing = () => {
       </div>
 
       <img src={phone_img} alt="Phone" className="phone-image" />
-
-      <div className="team">
-        <h3 className="heading">Our team</h3>
-        <div className="team-row">
-          <div className="img-team-row">
-            <img src={team_img} alt="Team" className="team-image" />
-            <div className="team-text">
-              <h2>Anton Romankov</h2>
-              <h3>CTO</h3>
-            </div>
-          </div>
-          <div className="img-team-row">
-            <img src={team_img} alt="Team" className="team-image" />
-            <div className="team-text">
-              <h2>Anton Romankov</h2>
-              <h3>CTO</h3>
-            </div>
-          </div>
-          <div className="img-team-row">
-            <img src={team_img} alt="Team" className="team-image" />
-            <div className="team-text">
-              <h2>Anton Romankov</h2>
-              <h3>CTO</h3>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div id="footer">
         <Header logo={nearIcon} />
       </div>

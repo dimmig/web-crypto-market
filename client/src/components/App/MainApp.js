@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import * as nearAPI from "near-api-js";
 import axios from "axios";
 import Big from "big.js";
@@ -9,8 +9,7 @@ import BuyCheckmarkIcon from "../styles/icons/buy_checkmark_icon.svg";
 import SellCheckmarkIcon from "../styles/icons/sell_checkmark_icon.svg";
 import { Orders } from "./Orders";
 import { HiChevronDown } from "react-icons/hi";
-import { BsArrow90DegRight, BsChevronDoubleLeft } from "react-icons/bs";
-import { Calendar } from "@natscale/react-calendar";
+import { BsArrow90DegRight } from "react-icons/bs";
 import "@natscale/react-calendar/dist/main.css";
 
 import "../styles/landing.css";
@@ -18,7 +17,6 @@ import "../styles/app.css";
 import { Balances } from "./Balances";
 import { OrderBook } from "./OrderBook";
 import tokenConfig from "../../config/tokenConfig";
-import { config } from "dotenv";
 
 const BN = require("bn.js");
 
@@ -105,7 +103,6 @@ export const MainApp = ({
   config,
   wallet,
   provider,
-  near,
 }) => {
   const [balances, setBalances] = useState([{}]);
   const [tokens, setTokens] = useState([{}]);
@@ -309,7 +306,7 @@ export const MainApp = ({
         "remove_order",
         "internal_remove_order",
       ],
-      successUrl: "https://jove-06.github.io/web-crypto-market/#/app",
+      successUrl: "https://dimmig.github.io/web-crypto-market/#/app",
       failureUrl: null,
     });
   };
@@ -768,11 +765,6 @@ export const MainApp = ({
     }
   };
 
-  const composeKey = (sell_token, buy_token) => {
-    const result = sell_token + "#" + buy_token;
-    return result;
-  };
-
   return (
     <div className="container">
       <div id="wrapper">
@@ -782,7 +774,6 @@ export const MainApp = ({
             <h1 className="bold">Near</h1>
             <h2 className="thin">Market</h2>
           </div>
-
           <div className="btn-block">
             {currentUser ? (
               <div className="user-info">
