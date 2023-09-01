@@ -8,6 +8,10 @@ body {
   background-color: #f2f2f2;
 }
 
+.invisible {
+  display: none;
+}
+
 br {
   margin-bottom: 10px;
 }
@@ -86,6 +90,7 @@ a:hover {
 }
 
 .hrefs p {
+  white-space: nowrap;
   opacity: 0.8;
 }
 
@@ -144,15 +149,17 @@ a:hover {
 }
 
 .headline {
-  margin-left: 5%;
   margin-top: 5%;
-  width: 50%;
+}
+
+.man-image {
+  flex-basis: 300px;
 }
 
 .headline-text {
   font-family: "Rany";
   font-style: normal;
-  font-size: 58px;
+  font-size: 3rem;
   font-weight: 200;
   margin-bottom: 0;
 }
@@ -163,17 +170,19 @@ a:hover {
   font-weight: 500;
 }
 
-.man-image {
-  width: 626px;
-  height: 486px;
-  float: right;
-  margin-right: 5%;
+.header-wrapper {
+  padding: 0 5rem;
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .heading {
   width: 100%;
   height: 50%;
-  margin: 10% 0 20px 5%;
+  margin: 5rem 0 20px 5%;
   font-size: 40px;
   font-family: "Rany";
   font-style: normal;
@@ -184,17 +193,18 @@ a:hover {
 .instructions {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .block {
-  width: 360px;
+  width: 300px;
   height: 260px;
-  margin-left: 5%;
+  margin: 0 5%;
   display: flex;
-  justify-content: flex-start;
   align-items: flex-end;
+  flex-basis: 300px;
 }
 
 .block h1 {
@@ -343,6 +353,7 @@ a:hover {
 .features-image {
   height: 70%;
   width: 70%;
+  min-width: 150px;
 }
 
 .feature-top-icons {
@@ -354,12 +365,19 @@ a:hover {
 }
 
 .icon-pos {
-  width: 140px;
+  min-width: 140px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-right: 1rem;
 }
+
+.feature-icons-wrapper {
+  width: max-content;
+  margin-bottom: 4rem;
+}
+
 
 .icon-pos h3 {
   margin-left: 10%;
@@ -390,9 +408,11 @@ a:hover {
   height: 44px;
   width: 44px;
   border-radius: 50%;
-
   background-color: #e37a7a;
   box-shadow: 0px 7px 9px rgba(255, 36, 120, 0.12);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .checkmark-icon {
@@ -432,13 +452,11 @@ a:hover {
   height: 44px;
   width: 44px;
   border-radius: 50%;
+  box-shadow: 0px 7px 9px rgba(255, 36, 120, 0.12);
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
   background-color: #6672e0;
-  position: relative;
-  box-shadow: 0px 7px 9px rgba(112, 52, 253, 0.12);
 }
 
 .telegram-heading {
@@ -451,10 +469,17 @@ a:hover {
   opacity: 0.9;
 }
 
+.telegram-wrapper {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between
+}
+
 .phone-image {
-  width: 20%;
-  margin-left: 5%;
-  height: 20%;
+  width: 30%;
+  min-width: 150px;
+  margin: 0 1rem;
   transform: rotate(-10deg);
   float: left;
 }
@@ -476,4 +501,10 @@ a:hover {
 
 #footer {
   margin-top: 5%;
+}
+
+@media (max-width: 1050px) {
+  .instructions {
+    /* flex-direction: column; */
+  }
 }

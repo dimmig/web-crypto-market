@@ -8,7 +8,6 @@ import nearIcon from "./styles/images/logo.png";
 import man_img from "./styles/images/man_image.png";
 import features_img from "./styles/images/features_img.png";
 import phone_img from "./styles/images/telegram_img.png";
-import team_img from "./styles/images/team_photo.png";
 import successCheckmark from "./styles/icons/success_checkmark.svg";
 import buyCheckmark from "./styles/icons/buy_checkmark_icon.svg";
 import sellCheckmark from "./styles/icons/sell_checkmark_icon.svg";
@@ -18,20 +17,22 @@ export const Landing = () => {
   return (
     <div className="conatiner">
       <Header logo={nearIcon} />
-      <div className="man-image">
-        <img src={man_img} alt={"i"} />
-      </div>
-      <div className="headline">
-        <h1 className="headline-text">
-          Easy buy and sell
+      <div className="header-wrapper">
+        <div className="man-image">
+          <img src={man_img} alt={"i"} />
+        </div>
+        <div className="headline">
+          <h1 className="headline-text">
+            Easy buy and sell
+            <br />
+            crypro with
+          </h1>
+          <h1 className="headline-text headline-text-special">NearMarket!</h1>
           <br />
-          crypro with
-        </h1>
-        <h1 className="headline-text headline-text-special">NearMarket!</h1>
-        <br />
-        <a href="#/app">
-          <button className="default-button">Try app</button>
-        </a>
+          <a href="#/app">
+            <button className="default-button">Try app</button>
+          </a>
+        </div>
       </div>
 
       <h1 className="heading">How to use</h1>
@@ -99,62 +100,66 @@ export const Landing = () => {
             mollit. Enim consequat veniam pariatur nulla nisi velit exercitation
             proident culpa pariatur anim.
           </p>
-          <div className="feature-top-icons">
-            <div className="icon-pos">
-              <div className="buy-icon">
-                <img
-                  src={buyCheckmark}
-                  alt="Buy checkmark"
-                  className="checkmark-icon"
-                />
+          <div className="feature-icons-wrapper">
+            <div className="feature-top-icons">
+              <div className="icon-pos">
+                <div className="buy-icon">
+                  <img
+                    src={buyCheckmark}
+                    alt="Buy checkmark"
+                    className="checkmark-icon"
+                  />
+                </div>
+                <h3>Buy</h3>
               </div>
-              <h3>Buy</h3>
+              <div className="icon-pos">
+                <div className="sell-icon">
+                  <img
+                    src={sellCheckmark}
+                    alt="Sell checkmark"
+                    className="checkmark-icon"
+                  />
+                </div>
+                <h3>Sell</h3>
+              </div>
             </div>
-            <div className="icon-pos">
-              <div className="sell-icon">
-                <img
-                  src={sellCheckmark}
-                  alt="Sell checkmark"
-                  className="checkmark-icon"
-                />
+            <div className="feature-bottom-icons">
+              <div className="icon-pos">
+                <div className="orders-icon">
+                  <div className="orders-rectangle-icon" />
+                </div>
+                <h3>Orders</h3>
               </div>
-              <h3>Sell</h3>
-            </div>
-          </div>
-          <div className="feature-bottom-icons">
-            <div className="icon-pos">
-              <div className="orders-icon">
-                <div className="orders-rectangle-icon" />
+              <div className="icon-pos">
+                <div className="balance-icon">
+                  <img src={balanceIcon} alt="Balance icon" />
+                </div>
+                <h3>Balance</h3>
               </div>
-              <h3>Orders</h3>
-            </div>
-            <div className="icon-pos">
-              <div className="balance-icon">
-                <img src={balanceIcon} alt="Balance icon" />
-              </div>
-              <h3>Balance</h3>
             </div>
           </div>
         </div>
         <img src={features_img} alt="Features" className="features-image" />
       </div>
-      <div className="telegram-bot">
-        <h1 className="telegram-heading">Owr telegram bot</h1>
-        <p className="default-text">
-          Cupidatat est dolore Lorem incididunt minim anim excepteur in eu
-          cillum cupidatat. Labore pariatur qui dolor velit. Dolor quis Lorem
-          laboris deserunt ut Lorem nisi excepteur enim qui fugiat quis mollit.
-          Enim consequat veniam pariatur nulla nisi velit exercitation proident
-          culpa pariatur anim. Cupidatat est dolore Lorem incididunt minim anim
-          excepteur in eu cillum cupidatat. Labore pariatur qui dolor velit.
-          Dolor quis Lorem laboris deserunt ut Lorem nisi excepteur enim qui
-          fugiat quis mollit. Enim consequat veniam pariatur nulla nisi velit
-          exercitation proident culpa pariatur anim.
-        </p>
-        <button className="default-button blue-button">Try bot</button>
-      </div>
+      <div className="telegram-wrapper">
+        <div className="telegram-bot">
+          <h1 className="telegram-heading">Our telegram bot</h1>
+          <p className="default-text">
+            Cupidatat est dolore Lorem incididunt minim anim excepteur in eu
+            cillum cupidatat. Labore pariatur qui dolor velit. Dolor quis Lorem
+            laboris deserunt ut Lorem nisi excepteur enim qui fugiat quis
+            mollit. Enim consequat veniam pariatur nulla nisi velit exercitation
+            proident culpa pariatur anim. Cupidatat est dolore Lorem incididunt
+            minim anim excepteur in eu cillum cupidatat. Labore pariatur qui
+            dolor velit. Dolor quis Lorem laboris deserunt ut Lorem nisi
+            excepteur enim qui fugiat quis mollit. Enim consequat veniam
+            pariatur nulla nisi velit exercitation proident culpa pariatur anim.
+          </p>
+          <button className="default-button blue-button">Try bot</button>
+        </div>
 
-      <img src={phone_img} alt="Phone" className="phone-image" />
+        <img src={phone_img} alt="Phone" className="phone-image" />
+      </div>
       <div id="footer">
         <Header logo={nearIcon} />
       </div>
